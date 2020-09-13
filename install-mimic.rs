@@ -36,7 +36,7 @@ use std::{
 
 use getopts::Options;
 
-const USAGE_STR: &'static str = "Usage:	install-mimic [-v] [-r reffile] srcfile dstfile
+const USAGE_STR: &str = "Usage:	install-mimic [-v] [-r reffile] srcfile dstfile
 	install-mimic [-v] [-r reffile] file1 [file2...] directory
 	install-mimic -V | --version | -h | --help
 	install-mimic --features
@@ -46,7 +46,7 @@ const USAGE_STR: &'static str = "Usage:	install-mimic [-v] [-r reffile] srcfile 
 	-r	specify a reference file to obtain the information from
 	-v	verbose operation; display diagnostic output";
 
-const VERSION_STR: &'static str = "0.4.0";
+const VERSION_STR: &str = "0.4.0";
 
 fn version()
 {
