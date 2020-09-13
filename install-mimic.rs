@@ -24,15 +24,15 @@
  * SUCH DAMAGE.
  */
 
-extern crate getopts;
-
-use std::env;
-use std::fs;
-use std::io;
-use std::io::Write;
-use std::os::unix::fs::MetadataExt;
-use std::path::Path;
-use std::process::Command;
+use std::{
+    env,
+    fs,
+    io,
+    io::Write,
+    os::unix::fs::MetadataExt,
+    path::Path,
+    process::Command
+};
 
 use getopts::Options;
 
