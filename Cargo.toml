@@ -9,4 +9,5 @@ name = "install-mimic"
 path = "install-mimic.rs"
 
 [dependencies]
+expect-exit = "0.3.1"
 getopts = "0.2"

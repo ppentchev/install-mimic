@@ -26,10 +26,12 @@
 
 use std::env;
 use std::fs;
+use std::io;
 use std::os::unix::fs::MetadataExt;
 use std::path::Path;
 use std::process::Command;
 
+use expect_exit::{Expected, ExpectedWithError};
 use getopts::Options;
 
 const USAGE_STR: &str = "Usage:	install-mimic [-v] [-r reffile] srcfile dstfile
@@ -49,18 +51,11 @@ fn version() {
 }
 
 fn usage() -> ! {
-    panic!("{}", USAGE_STR)
+    expect_exit::exit(USAGE_STR)
 }
 
 fn features() {
     println!("Features: install-mimic={}", VERSION_STR);
-}
-
-fn stat_fatal(fname: &str) -> fs::Metadata {
-    match fs::metadata(fname) {
-        Err(e) => panic!("Could not examine {}: {}", fname, e),
-        Ok(m) => m,
-    }
 }
 
 fn install_mimic(src: &str, dst: &str, refname: &Option<String>, verbose: bool) {
@@ -68,7 +63,7 @@ fn install_mimic(src: &str, dst: &str, refname: &Option<String>, verbose: bool) 
         Some(ref s) => s.clone(),
         None => String::from(dst),
     };
-    let stat = stat_fatal(&filetoref);
+    let stat = fs::metadata(&filetoref).or_exit_e(&format!("Could not examine {}", filetoref));
     let uid = stat.uid().to_string();
     let gid = stat.gid().to_string();
     let mode = format!("{:o}", stat.mode() & 0o7777);
@@ -77,13 +72,9 @@ fn install_mimic(src: &str, dst: &str, refname: &Option<String>, verbose: bool) 
     if verbose {
         println!("{:?}", cmd);
     }
-    match cmd.status() {
-        Err(e) => panic!("Could not run install: {}", e),
-        Ok(m) => match m.success() {
-            false => panic!("Could not install {} as {}", src, dst),
-            true => m,
-        },
-    };
+    if !cmd.status().or_exit_e("Could not run install").success() {
+        expect_exit::exit(&format!("Could not install {} as {}", src, dst));
+    }
 }
 
 fn main() {
@@ -136,29 +127,33 @@ fn main() {
     }
     let lastidx = lastidx - 1;
     let lastarg = &opts.free[lastidx];
-    let is_dir = match Path::new(lastarg).exists() {
-        true => stat_fatal(lastarg).is_dir(),
-        false => match refname {
-            Some(_) => false,
-            None => usage(),
-        },
+    let is_dir = match fs::metadata(lastarg) {
+        Err(err) if err.kind() == io::ErrorKind::NotFound => {
+            if refname.is_none() {
+                usage();
+            }
+            false
+        }
+        Err(err) => {
+            expect_exit::exit(&format!("Could not examine {}: {}", lastarg, err));
+        }
+        Ok(data) => data.is_dir(),
     };
     if is_dir {
         let dstpath = Path::new(lastarg);
         for f in &opts.free[0..lastidx] {
-            let basename = match Path::new(f).file_name() {
-                None => panic!("Invalid source filename {}", f),
-                Some(s) => s,
-            };
-            let dstname = match dstpath.join(Path::new(basename)).to_str() {
-                None => panic!(
+            let basename = Path::new(f)
+                .file_name()
+                .or_exit(&format!("Invalid source filename {}", f));
+            let dstname = dstpath
+                .join(Path::new(basename))
+                .to_str()
+                .or_exit(&format!(
                     "Could not build a destination path for {} in {}",
                     f,
                     dstpath.display()
-                ),
-                Some(s) => s,
-            }
-            .to_string();
+                ))
+                .to_string();
             install_mimic(f, &dstname, &refname, verbose);
         }
     } else if lastidx != 1 {
