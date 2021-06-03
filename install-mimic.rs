@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2016 - 2018  Peter Pentchev
+ * Copyright (c) 2016 - 2018, 2021  Peter Pentchev
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,6 @@
 
 use std::env;
 use std::fs;
-use std::io::{self, Write};
 use std::os::unix::fs::MetadataExt;
 use std::path::Path;
 use std::process::Command;
@@ -111,7 +110,7 @@ fn main() {
     optargs.optflag("v", "", "verbose operation; display diagnostic output");
     let opts = match optargs.parse(&args[1..]) {
         Err(e) => {
-            writeln!(io::stderr(), "{}", e).unwrap();
+            eprintln!("{}", e);
             usage()
         }
         Ok(m) => m,
