@@ -1,6 +1,7 @@
 install-mimic (0.4.0-6) UNRELEASED; urgency=medium
 
   * Set upstream metadata fields: Bug-Database.
+  * Update standards version to 4.5.1, no changes needed.
 
  -- Debian Janitor <janitor@jelmer.uk>  Sun, 05 Sep 2021 07:52:08 -0000
 
