@@ -2,7 +2,10 @@ Source: install-mimic
 Section: utils
 Priority: optional
 Maintainer: Peter Pentchev <roam@debian.org>
-Build-Depends: debhelper-compat (= 13), perl
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-sequence-single-binary,
+ perl,
 Standards-Version: 4.6.0
 Homepage: https://devel.ringlet.net/misc/install-mimic/
 Vcs-Git: https://github.com/ppentchev/install-mimic.git -b debian/master
