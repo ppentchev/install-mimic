@@ -44,7 +44,7 @@ const USAGE_STR: &str = "Usage:	install-mimic [-v] [-r reffile] srcfile dstfile
 	-r	specify a reference file to obtain the information from
 	-v	verbose operation; display diagnostic output";
 
-const VERSION_STR: &str = "0.4.0";
+const VERSION_STR: &str = env!("CARGO_PKG_VERSION");
 
 fn version() {
     println!("install-mimic {}", VERSION_STR);
