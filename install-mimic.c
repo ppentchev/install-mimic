@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2016 - 2018  Peter Pentchev
+ * Copyright (c) 2016 - 2018, 2021  Peter Pentchev
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@
 #endif
 #endif
 
-#define VERSION_STRING	"0.4.0"
+#define VERSION_STRING	"0.4.1"
 
 static bool		verbose;
 

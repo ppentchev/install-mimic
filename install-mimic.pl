@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2015, 2016, 2018  Peter Pentchev
+# Copyright (c) 2015, 2016, 2018, 2021  Peter Pentchev
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ use File::Basename;
 use Getopt::Std;
 use POSIX ':sys_wait_h';
 
-my $version_string = '0.4.0';
+my $version_string = '0.4.1';
 my $verbose = 0;
 
 sub version()
