@@ -58,22 +58,41 @@ fn features() {
     println!("Features: install-mimic={}", VERSION_STR);
 }
 
-fn install_mimic(src: &str, dst: &str, refname: &Option<String>, verbose: bool) {
+fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
+    src: SP,
+    dst: DP,
+    refname: &Option<String>,
+    verbose: bool,
+) {
+    let src_path = src.as_ref().to_str().or_exit(|| {
+        format!(
+            "Could not build a source path from {}",
+            src.as_ref().display()
+        )
+    });
+    let dst_path = dst.as_ref().to_str().or_exit(|| {
+        format!(
+            "Could not build a destination path from {}",
+            dst.as_ref().display()
+        )
+    });
     let filetoref = match *refname {
         Some(ref s) => s.clone(),
-        None => String::from(dst),
+        None => dst_path.to_string(),
     };
     let stat = fs::metadata(&filetoref).or_exit_e(|| format!("Could not examine {}", filetoref));
     let uid = stat.uid().to_string();
     let gid = stat.gid().to_string();
     let mode = format!("{:o}", stat.mode() & 0o7777);
     let mut cmd = process::Command::new("install");
-    cmd.args(&["-c", "-o", &uid, "-g", &gid, "-m", &mode, "--", src, dst]);
+    cmd.args(&[
+        "-c", "-o", &uid, "-g", &gid, "-m", &mode, "--", src_path, dst_path,
+    ]);
     if verbose {
         println!("{:?}", cmd);
     }
     if !cmd.status().or_exit_e_("Could not run install").success() {
-        expect_exit::exit(&format!("Could not install {} as {}", src, dst));
+        expect_exit::exit(&format!("Could not install {} as {}", src_path, dst_path));
     }
 }
 
@@ -146,18 +165,7 @@ fn main() {
             let basename = pathref
                 .file_name()
                 .or_exit(|| format!("Invalid source filename {}", f));
-            let dstname = dstpath
-                .join(basename)
-                .to_str()
-                .or_exit(|| {
-                    format!(
-                        "Could not build a destination path for {} in {}",
-                        f,
-                        dstpath.display()
-                    )
-                })
-                .to_string();
-            install_mimic(f, &dstname, &refname, verbose);
+            install_mimic(f, dstpath.join(basename), &refname, verbose);
         }
     } else if lastidx != 1 {
         usage();
