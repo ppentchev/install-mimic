@@ -140,13 +140,14 @@ fn main() {
         Ok(data) => data.is_dir(),
     };
     if is_dir {
-        let dstpath = path::Path::new(lastarg);
+        let dstpath: &path::Path = lastarg.as_ref();
         for f in &opts.free[0..lastidx] {
-            let basename = path::Path::new(f)
+            let pathref: &path::Path = f.as_ref();
+            let basename = pathref
                 .file_name()
                 .or_exit(|| format!("Invalid source filename {}", f));
             let dstname = dstpath
-                .join(path::Path::new(basename))
+                .join(basename)
                 .to_str()
                 .or_exit(|| {
                     format!(
