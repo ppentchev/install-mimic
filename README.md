@@ -33,6 +33,9 @@ The source of the `install-mimic` utility may be obtained at
 
 ### 0.4.1 (not yet)
 
+- Rework the Rust implementation, bringing it up to date with
+  Rust edition 2021 and with other changes since it was introduced.
+
 ### 0.4.0 (2018-05-04)
 
 - Add the `--help` and `--version` long options.
