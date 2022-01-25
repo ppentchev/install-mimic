@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2016 - 2018, 2021  Peter Pentchev
+ * Copyright (c) 2016 - 2018, 2021, 2022  Peter Pentchev
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,7 +63,7 @@ fn install_mimic(src: &str, dst: &str, refname: &Option<String>, verbose: bool) 
         Some(ref s) => s.clone(),
         None => String::from(dst),
     };
-    let stat = fs::metadata(&filetoref).or_exit_e(&format!("Could not examine {}", filetoref));
+    let stat = fs::metadata(&filetoref).or_exit_e(|| format!("Could not examine {}", filetoref));
     let uid = stat.uid().to_string();
     let gid = stat.gid().to_string();
     let mode = format!("{:o}", stat.mode() & 0o7777);
@@ -72,7 +72,7 @@ fn install_mimic(src: &str, dst: &str, refname: &Option<String>, verbose: bool) 
     if verbose {
         println!("{:?}", cmd);
     }
-    if !cmd.status().or_exit_e("Could not run install").success() {
+    if !cmd.status().or_exit_e_("Could not run install").success() {
         expect_exit::exit(&format!("Could not install {} as {}", src, dst));
     }
 }
@@ -144,15 +144,17 @@ fn main() {
         for f in &opts.free[0..lastidx] {
             let basename = Path::new(f)
                 .file_name()
-                .or_exit(&format!("Invalid source filename {}", f));
+                .or_exit(|| format!("Invalid source filename {}", f));
             let dstname = dstpath
                 .join(Path::new(basename))
                 .to_str()
-                .or_exit(&format!(
-                    "Could not build a destination path for {} in {}",
-                    f,
-                    dstpath.display()
-                ))
+                .or_exit(|| {
+                    format!(
+                        "Could not build a destination path for {} in {}",
+                        f,
+                        dstpath.display()
+                    )
+                })
                 .to_string();
             install_mimic(f, &dstname, &refname, verbose);
         }
