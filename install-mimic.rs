@@ -46,6 +46,18 @@ const USAGE_STR: &str = "Usage:	install-mimic [-v] [-r reffile] srcfile dstfile
 
 const VERSION_STR: &str = env!("CARGO_PKG_VERSION");
 
+struct Config {
+    filenames: Vec<String>,
+    destination: String,
+    refname: Option<String>,
+    verbose: bool,
+}
+
+enum Mode {
+    Handled,
+    Install(Config),
+}
+
 fn version() {
     println!("install-mimic {}", VERSION_STR);
 }
@@ -96,7 +108,7 @@ fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
     }
 }
 
-fn main() {
+fn parse_args() -> Mode {
     let args: Vec<String> = env::args().collect();
 
     let mut optargs = Options::new();
@@ -135,41 +147,63 @@ fn main() {
         features();
     }
     if opts.opt_present("h") || opts.opt_present("V") || opts.opt_present("features") {
-        return;
+        return Mode::Handled;
     }
     let refname = opts.opt_str("r");
     let verbose = opts.opt_present("v");
 
-    let lastidx = opts.free.len();
-    if lastidx < 2 {
-        usage();
+    let mut filenames = opts.free;
+    match filenames.pop() {
+        None => usage(),
+        Some(destination) => match filenames.is_empty() {
+            true => usage(),
+            false => Mode::Install(Config {
+                filenames,
+                destination,
+                refname,
+                verbose,
+            }),
+        },
     }
-    let lastidx = lastidx - 1;
-    let lastarg = &opts.free[lastidx];
-    let is_dir = match fs::metadata(lastarg) {
+}
+
+fn doit(cfg: Config) {
+    let is_dir = match fs::metadata(&cfg.destination) {
         Err(err) if err.kind() == io::ErrorKind::NotFound => {
-            if refname.is_none() {
+            if cfg.refname.is_none() {
                 usage();
             }
             false
         }
         Err(err) => {
-            expect_exit::exit(&format!("Could not examine {}: {}", lastarg, err));
+            expect_exit::exit(&format!("Could not examine {}: {}", cfg.destination, err));
         }
         Ok(data) => data.is_dir(),
     };
     if is_dir {
-        let dstpath: &path::Path = lastarg.as_ref();
-        for f in &opts.free[0..lastidx] {
+        let dstpath: &path::Path = cfg.destination.as_ref();
+        for f in &cfg.filenames {
             let pathref: &path::Path = f.as_ref();
             let basename = pathref
                 .file_name()
                 .or_exit(|| format!("Invalid source filename {}", f));
-            install_mimic(f, dstpath.join(basename), &refname, verbose);
+            install_mimic(f, dstpath.join(basename), &cfg.refname, cfg.verbose);
         }
-    } else if lastidx != 1 {
+    } else if cfg.filenames.len() != 1 {
         usage();
     } else {
-        install_mimic(&opts.free[0], lastarg, &refname, verbose);
+        install_mimic(
+            &cfg.filenames[0],
+            &cfg.destination,
+            &cfg.refname,
+            cfg.verbose,
+        );
     }
+}
+
+fn main() {
+    match parse_args() {
+        Mode::Handled => (),
+        Mode::Install(cfg) => doit(cfg),
+    };
 }
