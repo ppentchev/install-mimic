@@ -28,8 +28,8 @@ use std::env;
 use std::fs;
 use std::io;
 use std::os::unix::fs::MetadataExt;
-use std::path::Path;
-use std::process::Command;
+use std::path;
+use std::process;
 
 use expect_exit::{Expected, ExpectedWithError};
 use getopts::Options;
@@ -67,7 +67,7 @@ fn install_mimic(src: &str, dst: &str, refname: &Option<String>, verbose: bool) 
     let uid = stat.uid().to_string();
     let gid = stat.gid().to_string();
     let mode = format!("{:o}", stat.mode() & 0o7777);
-    let mut cmd = Command::new("install");
+    let mut cmd = process::Command::new("install");
     cmd.args(&["-c", "-o", &uid, "-g", &gid, "-m", &mode, "--", src, dst]);
     if verbose {
         println!("{:?}", cmd);
@@ -140,13 +140,13 @@ fn main() {
         Ok(data) => data.is_dir(),
     };
     if is_dir {
-        let dstpath = Path::new(lastarg);
+        let dstpath = path::Path::new(lastarg);
         for f in &opts.free[0..lastidx] {
-            let basename = Path::new(f)
+            let basename = path::Path::new(f)
                 .file_name()
                 .or_exit(|| format!("Invalid source filename {}", f));
             let dstname = dstpath
-                .join(Path::new(basename))
+                .join(path::Path::new(basename))
                 .to_str()
                 .or_exit(|| {
                     format!(
