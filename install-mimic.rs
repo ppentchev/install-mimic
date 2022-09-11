@@ -161,7 +161,7 @@ fn parse_args() -> Mode {
     })
 }
 
-fn doit(cfg: Config) {
+fn doit(cfg: &Config) {
     let is_dir = match fs::metadata(&cfg.destination) {
         Err(err) if err.kind() == io::ErrorKind::NotFound => {
             if cfg.refname.is_none() {
@@ -194,6 +194,6 @@ fn doit(cfg: Config) {
 fn main() {
     match parse_args() {
         Mode::Handled => (),
-        Mode::Install(cfg) => doit(cfg),
+        Mode::Install(cfg) => doit(&cfg),
     };
 }
