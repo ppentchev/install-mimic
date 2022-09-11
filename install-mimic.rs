@@ -31,8 +31,26 @@ use std::os::unix::fs::MetadataExt;
 use std::path;
 use std::process;
 
+use clap::Parser;
 use expect_exit::{Expected, ExpectedWithError};
-use getopts::Options;
+
+#[derive(Debug, Parser)]
+#[clap(version)]
+struct Cli {
+    /// Display the features supported by the program.
+    #[clap(long)]
+    features: bool,
+
+    /// Specify a reference file to obtain the information from.
+    #[clap(short)]
+    reffile: Option<String>,
+
+    /// Verbose operation; display diagnostic output.
+    #[clap(short, long)]
+    verbose: bool,
+
+    filenames: Vec<String>,
+}
 
 const USAGE_STR: &str = "Usage:	install-mimic [-v] [-r reffile] srcfile dstfile
 	install-mimic [-v] [-r reffile] file1 [file2...] directory
@@ -56,11 +74,6 @@ struct Config {
 enum Mode {
     Handled,
     Install(Config),
-}
-
-#[allow(clippy::print_stdout)]
-fn version() {
-    println!("install-mimic {}", VERSION_STR);
 }
 
 fn usage() -> ! {
@@ -115,46 +128,13 @@ fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
 
 #[allow(clippy::print_stdout)]
 fn parse_args() -> Mode {
-    let args: Vec<String> = env::args().collect();
-
-    let mut optargs = Options::new();
-    optargs.optflag(
-        "",
-        "features",
-        "display program features information and exit",
-    );
-    optargs.optflag("h", "help", "display program usage information and exit");
-    optargs.optopt(
-        "r",
-        "",
-        "specify a reference file to obtain the information from",
-        "",
-    );
-    optargs.optflag(
-        "V",
-        "version",
-        "display program version information and exit",
-    );
-    optargs.optflag("v", "", "verbose operation; display diagnostic output");
-    let opts = optargs
-        .parse(args.split_first().or_exit_("Not even a program name?").1)
-        .or_exit_e_(USAGE_STR);
-    if opts.opt_present("V") {
-        version();
-    }
-    if opts.opt_present("h") {
-        println!("{}", USAGE_STR);
-    }
-    if opts.opt_present("features") {
+    let opts = Cli::parse();
+    if opts.features {
         features();
-    }
-    if opts.opt_present("h") || opts.opt_present("V") || opts.opt_present("features") {
         return Mode::Handled;
     }
-    let refname = opts.opt_str("r");
-    let verbose = opts.opt_present("v");
 
-    let mut filenames = opts.free;
+    let mut filenames = opts.filenames;
     let destination = filenames.pop().or_exit_(USAGE_STR);
     if filenames.is_empty() {
         usage();
@@ -162,8 +142,8 @@ fn parse_args() -> Mode {
     Mode::Install(Config {
         filenames,
         destination,
-        refname,
-        verbose,
+        refname: opts.reffile,
+        verbose: opts.verbose,
     })
 }
 
