@@ -96,12 +96,14 @@ fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
     let user_id = stat.uid().to_string();
     let group_id = stat.gid().to_string();
     let mode = format!("{:o}", stat.mode() & 0o7777);
-    let mut cmd = process::Command::new("install");
-    cmd.args(&[
+    let prog_name = "install";
+    let args = [
         "-c", "-o", &user_id, "-g", &group_id, "-m", &mode, "--", src_path, dst_path,
-    ]);
+    ];
+    let mut cmd = process::Command::new(&prog_name);
+    cmd.args(&args);
     if verbose {
-        println!("{:?}", cmd);
+        println!("{} {}", prog_name, shell_words::join(&args));
     }
     if !cmd.status().or_exit_e_("Could not run install").success() {
         expect_exit::exit(&format!("Could not install {} as {}", src_path, dst_path));

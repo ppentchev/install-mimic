@@ -17,3 +17,4 @@ path = "install-mimic.rs"
 [dependencies]
 expect-exit = "0.4"
 getopts = "0.2"
+shell-words = "1.1"
