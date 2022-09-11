@@ -3,7 +3,7 @@ name = "install-mimic"
 version = "0.4.1"
 edition = "2021"
 authors = ["Peter Pentchev <roam@ringlet.net>"]
- 
+
 [[bin]]
 name = "install-mimic"
 path = "install-mimic.rs"
