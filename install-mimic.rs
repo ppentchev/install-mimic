@@ -130,13 +130,9 @@ fn parse_args() -> Mode {
         "display program version information and exit",
     );
     optargs.optflag("v", "", "verbose operation; display diagnostic output");
-    let opts = match optargs.parse(&args[1..]) {
-        Err(e) => {
-            eprintln!("{}", e);
-            usage()
-        }
-        Ok(m) => m,
-    };
+    let opts = optargs
+        .parse(args.split_first().or_exit_("Not even a program name?").1)
+        .or_exit_e_(USAGE_STR);
     if opts.opt_present("V") {
         version();
     }
@@ -187,15 +183,11 @@ fn doit(cfg: Config) {
                 .or_exit(|| format!("Invalid source filename {}", f));
             install_mimic(f, dstpath.join(basename), &cfg.refname, cfg.verbose);
         }
-    } else if cfg.filenames.len() != 1 {
-        usage();
     } else {
-        install_mimic(
-            &cfg.filenames[0],
-            &cfg.destination,
-            &cfg.refname,
-            cfg.verbose,
-        );
+        match *cfg.filenames {
+            [ref source] => install_mimic(source, &cfg.destination, &cfg.refname, cfg.verbose),
+            _ => usage(),
+        }
     }
 }
 
