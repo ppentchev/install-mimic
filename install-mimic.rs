@@ -153,18 +153,16 @@ fn parse_args() -> Mode {
     let verbose = opts.opt_present("v");
 
     let mut filenames = opts.free;
-    match filenames.pop() {
-        None => usage(),
-        Some(destination) => match filenames.is_empty() {
-            true => usage(),
-            false => Mode::Install(Config {
-                filenames,
-                destination,
-                refname,
-                verbose,
-            }),
-        },
+    let destination = filenames.pop().or_exit_(USAGE_STR);
+    if filenames.is_empty() {
+        usage();
     }
+    Mode::Install(Config {
+        filenames,
+        destination,
+        refname,
+        verbose,
+    })
 }
 
 fn doit(cfg: Config) {
