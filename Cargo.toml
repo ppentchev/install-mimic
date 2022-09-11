@@ -3,6 +3,12 @@ name = "install-mimic"
 version = "0.4.1"
 edition = "2021"
 authors = ["Peter Pentchev <roam@ringlet.net>"]
+description = "Overwrite files preserving the destination's ownership and access mode"
+readme = "README.md"
+license = "BSD-2-Clause"
+repository = "https://gitlab.com/ppentchev/install-mimic"
+categories = ["command-line-utilities", "filesystem"]
+keywords = ["install", "file", "preserve"]
 
 [[bin]]
 name = "install-mimic"
