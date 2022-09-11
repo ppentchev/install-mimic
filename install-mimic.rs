@@ -58,6 +58,7 @@ enum Mode {
     Install(Config),
 }
 
+#[allow(clippy::print_stdout)]
 fn version() {
     println!("install-mimic {}", VERSION_STR);
 }
@@ -66,10 +67,12 @@ fn usage() -> ! {
     expect_exit::exit(USAGE_STR)
 }
 
+#[allow(clippy::print_stdout)]
 fn features() {
     println!("Features: install-mimic={}", VERSION_STR);
 }
 
+#[allow(clippy::print_stdout)]
 fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
     src: SP,
     dst: DP,
@@ -110,6 +113,7 @@ fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
     }
 }
 
+#[allow(clippy::print_stdout)]
 fn parse_args() -> Mode {
     let args: Vec<String> = env::args().collect();
 
