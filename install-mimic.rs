@@ -90,7 +90,7 @@ fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
     });
     let filetoref = match *refname {
         Some(ref s) => s.clone(),
-        None => dst_path.to_string(),
+        None => dst_path.to_owned(),
     };
     let stat = fs::metadata(&filetoref).or_exit_e(|| format!("Could not examine {}", filetoref));
     let uid = stat.uid().to_string();
