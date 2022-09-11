@@ -93,12 +93,12 @@ fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
         None => dst_path.to_owned(),
     };
     let stat = fs::metadata(&filetoref).or_exit_e(|| format!("Could not examine {}", filetoref));
-    let uid = stat.uid().to_string();
-    let gid = stat.gid().to_string();
+    let user_id = stat.uid().to_string();
+    let group_id = stat.gid().to_string();
     let mode = format!("{:o}", stat.mode() & 0o7777);
     let mut cmd = process::Command::new("install");
     cmd.args(&[
-        "-c", "-o", &uid, "-g", &gid, "-m", &mode, "--", src_path, dst_path,
+        "-c", "-o", &user_id, "-g", &group_id, "-m", &mode, "--", src_path, dst_path,
     ]);
     if verbose {
         println!("{:?}", cmd);
