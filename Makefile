@@ -94,7 +94,6 @@ ${MAN1}:	${PROG}.1
 		${GZIP} -cn9 ${PROG}.1 > ${MAN1} || (rm -f -- ${MAN1}; false)
 
 ${PROG_RS}:	${PROG}.rs
-#		rustc -o ${PROG_RS} ${PROG}.rs
 		${CARGO} build
 
 install:	all
