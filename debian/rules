@@ -9,6 +9,8 @@ DEB_CFLAGS_MAINT_APPEND=	-Werror
 export DEB_CFLAGS_MAINT_APPEND
 endif
 
+include /usr/share/dpkg/default.mk
+
 export LFS_CPPFLAGS=
 export LFS_LDFLAGS=
 
