@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Peter Pentchev <roam@debian.org>
 Build-Depends:
  debhelper-compat (= 13),
+ dh-package-notes,
  dh-sequence-single-binary,
  dpkg-build-api (= 1),
  perl,

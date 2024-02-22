@@ -11,6 +11,8 @@ endif
 
 include /usr/share/dpkg/default.mk
 
+include /usr/share/debhelper/dh_package_notes/package-notes.mk
+
 export LFS_CPPFLAGS=
 export LFS_LDFLAGS=
 
