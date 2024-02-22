@@ -53,6 +53,8 @@ LDFLAGS?=
 LDFLAGS+=	${LFS_LDFLAGS}
 LIBS?=
 
+CARGO?=		cargo
+
 PREFIX?=	/usr
 BINDIR?=	${PREFIX}/bin
 SHAREDIR?=	${PREFIX}/share
@@ -93,7 +95,7 @@ ${MAN1}:	${PROG}.1
 
 ${PROG_RS}:	${PROG}.rs
 #		rustc -o ${PROG_RS} ${PROG}.rs
-		cargo build
+		${CARGO} build
 
 install:	all
 		${MKDIR} ${DESTDIR}${BINDIR}
@@ -120,7 +122,7 @@ test-all:	test-c test-perl test-rust
 
 clean:
 		${RM} ${PROG} ${PROG}.o ${MAN1}
-		[ ! -d "target" ] || cargo clean
+		[ ! -d "target" ] || ${CARGO} clean
 
 distclean:	clean
 		${RM} Cargo.lock
