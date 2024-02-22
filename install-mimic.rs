@@ -116,10 +116,10 @@ fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
     let args = [
         "-c", "-o", &user_id, "-g", &group_id, "-m", &mode, "--", src_path, dst_path,
     ];
-    let mut cmd = process::Command::new(&prog_name);
-    cmd.args(&args);
+    let mut cmd = process::Command::new(prog_name);
+    cmd.args(args);
     if verbose {
-        println!("{} {}", prog_name, shell_words::join(&args));
+        println!("{} {}", prog_name, shell_words::join(args));
     }
     if !cmd.status().or_exit_e_("Could not run install").success() {
         expect_exit::exit(&format!("Could not install {} as {}", src_path, dst_path));
