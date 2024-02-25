@@ -71,8 +71,11 @@ set -x
 	-W rust-2021-compatibility \
 	-W unused \
 	-W clippy::restriction \
+		-A clippy::blanket_clippy_restriction_lints \
 		-A clippy::implicit_return \
+		-A clippy::ref_patterns \
 		-A clippy::self_named_module_files \
+		-A clippy::single_call_fn \
 	-W clippy::pedantic \
 	-W clippy::cargo \
 	${run_nursery+-W clippy::nursery} \
