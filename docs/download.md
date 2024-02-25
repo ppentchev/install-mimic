@@ -7,6 +7,15 @@ SPDX-License-Identifier: BSD-2-Clause
 
 These are the released versions of [install-mimic](index.md) available for download.
 
+## [0.4.1] - 2024-02-26
+
+- [install-mimic-0.4.1.tar.bz2](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.1.tar.bz2)
+  (with [a PGP signature](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.1.tar.bz2.asc))
+- [install-mimic-0.4.1.tar.gz](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.1.tar.gz)
+  (with [a PGP signature](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.1.tar.gz.asc))
+- [install-mimic-0.4.1.tar.xz](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.1.tar.xz)
+  (with [a PGP signature](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.1.tar.xz.asc))
+
 ## [0.4.0] - 2018-05-04
 
 - [install-mimic-0.4.0.tar.bz2](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.0.tar.bz2)
