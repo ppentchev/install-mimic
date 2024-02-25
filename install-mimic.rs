@@ -82,7 +82,7 @@ fn usage() -> ! {
 
 #[allow(clippy::print_stdout)]
 fn features() {
-    println!("Features: install-mimic={}", VERSION_STR);
+    println!("Features: install-mimic={VERSION_STR}");
 }
 
 #[allow(clippy::print_stdout)]
@@ -94,24 +94,24 @@ fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
 ) {
     let src_path = src.as_ref().to_str().or_exit(|| {
         format!(
-            "Could not build a source path from {}",
-            src.as_ref().display()
+            "Could not build a source path from {src}",
+            src = src.as_ref().display()
         )
     });
     let dst_path = dst.as_ref().to_str().or_exit(|| {
         format!(
-            "Could not build a destination path from {}",
-            dst.as_ref().display()
+            "Could not build a destination path from {dst}",
+            dst = dst.as_ref().display()
         )
     });
     let filetoref = match *refname {
         Some(ref s) => s.clone(),
         None => dst_path.to_owned(),
     };
-    let stat = fs::metadata(&filetoref).or_exit_e(|| format!("Could not examine {}", filetoref));
+    let stat = fs::metadata(&filetoref).or_exit_e(|| format!("Could not examine {filetoref}"));
     let user_id = stat.uid().to_string();
     let group_id = stat.gid().to_string();
-    let mode = format!("{:o}", stat.mode() & 0o7777);
+    let mode = format!("{mode:o}", mode = stat.mode() & 0o7777);
     let prog_name = "install";
     let args = [
         "-c", "-o", &user_id, "-g", &group_id, "-m", &mode, "--", src_path, dst_path,
@@ -119,10 +119,10 @@ fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
     let mut cmd = process::Command::new(prog_name);
     cmd.args(args);
     if verbose {
-        println!("{} {}", prog_name, shell_words::join(args));
+        println!("{prog_name} {args}", args = shell_words::join(args));
     }
     if !cmd.status().or_exit_e_("Could not run install").success() {
-        expect_exit::exit(&format!("Could not install {} as {}", src_path, dst_path));
+        expect_exit::exit(&format!("Could not install {src_path} as {dst_path}"));
     }
 }
 
@@ -156,7 +156,10 @@ fn doit(cfg: &Config) {
             false
         }
         Err(err) => {
-            expect_exit::exit(&format!("Could not examine {}: {}", cfg.destination, err));
+            expect_exit::exit(&format!(
+                "Could not examine {dst}: {err}",
+                dst = cfg.destination
+            ));
         }
         Ok(data) => data.is_dir(),
     };
@@ -166,7 +169,7 @@ fn doit(cfg: &Config) {
             let pathref: &path::Path = f.as_ref();
             let basename = pathref
                 .file_name()
-                .or_exit(|| format!("Invalid source filename {}", f));
+                .or_exit(|| format!("Invalid source filename {f}"));
             install_mimic(f, dstpath.join(basename), &cfg.refname, cfg.verbose);
         }
     } else {
