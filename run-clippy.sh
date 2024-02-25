@@ -53,6 +53,7 @@ set -x
 		-A clippy::blanket_clippy_restriction_lints \
 		-A clippy::implicit_return \
 		-A clippy::ref_patterns \
+		-A clippy::question_mark_used \
 		-A clippy::self_named_module_files \
 		-A clippy::single_call_fn \
 	-W clippy::pedantic \

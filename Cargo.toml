@@ -19,6 +19,6 @@ name = "install-mimic"
 path = "install-mimic.rs"
 
 [dependencies]
+anyhow = "1"
 clap = { version = "4", features = ["derive"] }
-expect-exit = "0.4"
 shell-words = "1.1"

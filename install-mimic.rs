@@ -10,8 +10,8 @@ use std::os::unix::fs::MetadataExt;
 use std::path::Path;
 use std::process::Command;
 
+use anyhow::{bail, Context, Result};
 use clap::Parser;
-use expect_exit::{Expected, ExpectedWithError};
 
 #[derive(Debug, Parser)]
 #[clap(version)]
@@ -55,10 +55,6 @@ enum Mode {
     Install(Config),
 }
 
-fn usage() -> ! {
-    expect_exit::exit(USAGE_STR)
-}
-
 #[allow(clippy::print_stdout)]
 fn features() {
     println!("Features: install-mimic={VERSION_STR}");
@@ -70,24 +66,25 @@ fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
     dst: DP,
     refname: &Option<String>,
     verbose: bool,
-) {
-    let src_path = src.as_ref().to_str().or_exit(|| {
+) -> Result<()> {
+    let src_path = src.as_ref().to_str().with_context(|| {
         format!(
             "Could not build a source path from {src}",
             src = src.as_ref().display()
         )
-    });
-    let dst_path = dst.as_ref().to_str().or_exit(|| {
+    })?;
+    let dst_path = dst.as_ref().to_str().with_context(|| {
         format!(
             "Could not build a destination path from {dst}",
             dst = dst.as_ref().display()
         )
-    });
+    })?;
     let filetoref = match *refname {
         Some(ref path) => path.clone(),
         None => dst_path.to_owned(),
     };
-    let stat = fs::metadata(&filetoref).or_exit_e(|| format!("Could not examine {filetoref}"));
+    let stat =
+        fs::metadata(&filetoref).with_context(|| format!("Could not examine {filetoref}"))?;
     let user_id = stat.uid().to_string();
     let group_id = stat.gid().to_string();
     let mode = format!("{mode:o}", mode = stat.mode() & 0o7777);
@@ -100,45 +97,43 @@ fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
     if verbose {
         println!("{prog_name} {args}", args = shell_words::join(args));
     }
-    if !cmd.status().or_exit_e_("Could not run install").success() {
-        expect_exit::exit(&format!("Could not install {src_path} as {dst_path}"));
+    if !cmd.status().context("Could not run install")?.success() {
+        bail!("Could not install {src_path} as {dst_path}");
     }
+    Ok(())
 }
 
 #[allow(clippy::print_stdout)]
-fn parse_args() -> Mode {
+fn parse_args() -> Result<Mode> {
     let opts = Cli::parse();
     if opts.features {
         features();
-        return Mode::Handled;
+        return Ok(Mode::Handled);
     }
 
     let mut filenames = opts.filenames;
-    let destination = filenames.pop().or_exit_(USAGE_STR);
+    let destination = filenames.pop().context(USAGE_STR)?;
     if filenames.is_empty() {
-        usage();
+        bail!("{USAGE_STR}");
     }
-    Mode::Install(Config {
+    Ok(Mode::Install(Config {
         filenames,
         destination,
         refname: opts.reffile,
         verbose: opts.verbose,
-    })
+    }))
 }
 
-fn doit(cfg: &Config) {
+fn doit(cfg: &Config) -> Result<()> {
     let is_dir = match fs::metadata(&cfg.destination) {
         Err(err) if err.kind() == ErrorKind::NotFound => {
             if cfg.refname.is_none() {
-                usage();
+                bail!("{USAGE_STR}");
             }
             false
         }
         Err(err) => {
-            expect_exit::exit(&format!(
-                "Could not examine {dst}: {err}",
-                dst = cfg.destination
-            ));
+            bail!("Could not examine {dst}: {err}", dst = cfg.destination);
         }
         Ok(data) => data.is_dir(),
     };
@@ -148,20 +143,21 @@ fn doit(cfg: &Config) {
             let pathref: &Path = path.as_ref();
             let basename = pathref
                 .file_name()
-                .or_exit(|| format!("Invalid source filename {path}"));
-            install_mimic(path, dstpath.join(basename), &cfg.refname, cfg.verbose);
+                .with_context(|| format!("Invalid source filename {path}"))?;
+            install_mimic(path, dstpath.join(basename), &cfg.refname, cfg.verbose)?;
         }
+        Ok(())
     } else {
         match *cfg.filenames {
             [ref source] => install_mimic(source, &cfg.destination, &cfg.refname, cfg.verbose),
-            _ => usage(),
+            _ => bail!("{USAGE_STR}"),
         }
     }
 }
 
-fn main() {
-    match parse_args() {
-        Mode::Handled => (),
+fn main() -> Result<()> {
+    match parse_args().context("Could not parse the command-line arguments")? {
+        Mode::Handled => Ok(()),
         Mode::Install(cfg) => doit(&cfg),
-    };
+    }
 }
