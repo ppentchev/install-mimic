@@ -26,10 +26,10 @@
 
 use std::env;
 use std::fs;
-use std::io;
+use std::io::ErrorKind;
 use std::os::unix::fs::MetadataExt;
-use std::path;
-use std::process;
+use std::path::Path;
+use std::process::Command;
 
 use clap::Parser;
 use expect_exit::{Expected, ExpectedWithError};
@@ -86,7 +86,7 @@ fn features() {
 }
 
 #[allow(clippy::print_stdout)]
-fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
+fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
     src: SP,
     dst: DP,
     refname: &Option<String>,
@@ -116,7 +116,7 @@ fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
     let args = [
         "-c", "-o", &user_id, "-g", &group_id, "-m", &mode, "--", src_path, dst_path,
     ];
-    let mut cmd = process::Command::new(prog_name);
+    let mut cmd = Command::new(prog_name);
     cmd.args(args);
     if verbose {
         println!("{prog_name} {args}", args = shell_words::join(args));
@@ -149,7 +149,7 @@ fn parse_args() -> Mode {
 
 fn doit(cfg: &Config) {
     let is_dir = match fs::metadata(&cfg.destination) {
-        Err(err) if err.kind() == io::ErrorKind::NotFound => {
+        Err(err) if err.kind() == ErrorKind::NotFound => {
             if cfg.refname.is_none() {
                 usage();
             }
@@ -164,9 +164,9 @@ fn doit(cfg: &Config) {
         Ok(data) => data.is_dir(),
     };
     if is_dir {
-        let dstpath: &path::Path = cfg.destination.as_ref();
+        let dstpath: &Path = cfg.destination.as_ref();
         for path in &cfg.filenames {
-            let pathref: &path::Path = path.as_ref();
+            let pathref: &Path = path.as_ref();
             let basename = pathref
                 .file_name()
                 .or_exit(|| format!("Invalid source filename {path}"));
