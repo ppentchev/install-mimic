@@ -1,8 +1,7 @@
 # SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
 # SPDX-License-Identifier: BSD-2-Clause
 
-.tox/
-target/
-
-install-mimic
-install-mimic.o
+[tool.test-stages]
+stages = [
+  "@check and @quick and not @manual",
+]
