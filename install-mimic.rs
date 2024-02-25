@@ -105,7 +105,7 @@ fn install_mimic<SP: AsRef<path::Path>, DP: AsRef<path::Path>>(
         )
     });
     let filetoref = match *refname {
-        Some(ref s) => s.clone(),
+        Some(ref path) => path.clone(),
         None => dst_path.to_owned(),
     };
     let stat = fs::metadata(&filetoref).or_exit_e(|| format!("Could not examine {filetoref}"));
@@ -165,12 +165,12 @@ fn doit(cfg: &Config) {
     };
     if is_dir {
         let dstpath: &path::Path = cfg.destination.as_ref();
-        for f in &cfg.filenames {
-            let pathref: &path::Path = f.as_ref();
+        for path in &cfg.filenames {
+            let pathref: &path::Path = path.as_ref();
             let basename = pathref
                 .file_name()
-                .or_exit(|| format!("Invalid source filename {f}"));
-            install_mimic(f, dstpath.join(basename), &cfg.refname, cfg.verbose);
+                .or_exit(|| format!("Invalid source filename {path}"));
+            install_mimic(path, dstpath.join(basename), &cfg.refname, cfg.verbose);
         }
     } else {
         match *cfg.filenames {
