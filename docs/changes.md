@@ -12,15 +12,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Other changes
+
 - Rework the Rust implementation, bringing it up to date with
   Rust edition 2021 and with other changes since it was introduced.
 
 ## [0.4.0] - 2018-05-04
 
+### Additions
+
 - Add the `--help` and `--version` long options.
 - Add the `--features` long option.
 
 ## [0.3.1] - 2017-09-29
+
+### Fixes
 
 - In testing, get the file group from a new file created in
   the test directory to fix the case of enforced setgid directories.
@@ -29,29 +35,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.0] - 2017-02-27
 
-- Add a Rust implementation.
+### Fixes
+
 - Fix a memory allocation bug in the C implementation leading to
   destination filename corruption when the target specified on
   the command line is a directory.
 
+### Additions
+
+- Add a Rust implementation.
+
 ## [0.2.0] - 2016-06-29
 
+### Fixes
+
 - Explicitly test the Perl 5 implementation in the "test" target.
-- Add tests for the -r reffile and -v command-line options.
 - Let the tests continue if an expected file was not created.
+
+### Additions
+
+- Add tests for the -r reffile and -v command-line options.
 - Add a C implementation.
 
 ## [0.1.1] - 2016-06-28
 
+### Additions
+
 - Add the internal "dist" target for creating distribution tarballs.
 - Add a test suite.
+- Add a Travis CI configuration file and a cpanfile.
+
+### Other changes
+
 - Reorder the functions a bit to avoid prototype declarations.
 - Make the usage() function fatal by default.
-- Add a Travis CI configuration file and a cpanfile.
 - Move development from GitLab to GitHub.
 - Switch the homepage URL to HTTPS.
 
 ## [0.1.0] - 2015-06-02
+
+### Started
 
 - First public release.
 
