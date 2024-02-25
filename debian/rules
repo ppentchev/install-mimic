@@ -19,11 +19,11 @@ export LFS_LDFLAGS=
 export INSTALL_DATA=	install -m 644
 export INSTALL_SCRIPT=	install -m 755
 
-execute_after_dh_auto_build:
-	sed -ne '/^## Version history/,/^- First public release/p' README.md > NEWS.md || (rm -f NEWS.md; false)
+override_dh_installchangelogs:
+	dh_installchangelogs -X changes.md
 
 execute_after_dh_installchangelogs:
-	install -m 644 NEWS.md debian/install-mimic/usr/share/doc/install-mimic/NEWS
+	install -m 644 docs/changes.md debian/install-mimic/usr/share/doc/install-mimic/NEWS
 
 %:
 	dh '$@'

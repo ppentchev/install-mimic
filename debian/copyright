@@ -5,11 +5,11 @@ Source: https://devel.ringlet.net/misc/install-mimic/
 License: BSD-2-clause
 
 Files: *
-Copyright: Copyright (c) 2015 - 2018  Peter Pentchev
+Copyright: Peter Pentchev <roam@ringlet.net>
 License: BSD-2-clause
 
 Files: debian/*
-Copyright: Copyright (c) 2016 - 2022, 2024  Peter Pentchev
+Copyright: Peter Pentchev <roam@debian.org>
 License: BSD-2-clause
 
 License: BSD-2-clause

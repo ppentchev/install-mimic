@@ -1,16 +1,18 @@
-install-mimic (0.4.0-7) UNRELEASED; urgency=medium
+install-mimic (0.4.1-1) UNRELEASED; urgency=medium
 
   * Declare compliance with Debian Policy 4.6.2 with no changes.
     Note that the 0.4.0-6 upload actually declared compliance with
     Policy 4.6.0, not 4.5.0 as was stated in the changelog entry.
-  * Add the years 2022 and 2024 to my debian/* copyright notice.
-  * Fix a FTBFS twice in a row bug: when cleaning up, remove NEWS.md,
-    not changelog.md. Closes: #1047281
   * Include dpkg's default.mk for completeness.
   * Declare dpkg-build-api 1, drop the implied Rules-Requires-Root: no
     declaration.
   * Use dh-package-notes to record ELF package metadata.
   * Point the watch file to the new upstream download page.
+  * New upstream release:
+    - follow the upstream switch to yearless copyright notices
+    - install the docs/changes.md file directly as NEWS.md; no need to
+      parse its contents out of README.md anymore. This also fixes
+      a FTBFS twice in a row bug. Closes: #1047281
 
  -- Peter Pentchev <roam@debian.org>  Thu, 22 Feb 2024 09:13:42 +0200
 
