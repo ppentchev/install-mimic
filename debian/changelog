@@ -1,4 +1,4 @@
-install-mimic (0.4.1-1) UNRELEASED; urgency=medium
+install-mimic (0.4.1-1) unstable; urgency=medium
 
   * Declare compliance with Debian Policy 4.6.2 with no changes.
     Note that the 0.4.0-6 upload actually declared compliance with
@@ -14,7 +14,7 @@ install-mimic (0.4.1-1) UNRELEASED; urgency=medium
       parse its contents out of README.md anymore. This also fixes
       a FTBFS twice in a row bug. Closes: #1047281
 
- -- Peter Pentchev <roam@debian.org>  Thu, 22 Feb 2024 09:13:42 +0200
+ -- Peter Pentchev <roam@debian.org>  Mon, 26 Feb 2024 01:04:57 +0200
 
 install-mimic (0.4.0-6) unstable; urgency=medium
 
