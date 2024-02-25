@@ -1,0 +1,9 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: install-mimic
+Upstream-Contact: Peter Pentchev <roam@ringlet.net>
+Source: https://devel.ringlet.net/misc/install-mimic/
+
+Files:
+  Cargo.lock
+Copyright: Peter Pentchev <roam@ringlet.net>
+License: BSD-2-Clause

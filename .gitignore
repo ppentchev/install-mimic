@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
+# SPDX-License-Identifier: BSD-2-Clause
+
+target/
+
+install-mimic
+install-mimic.o
