@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
+SPDX-License-Identifier: BSD-2-Clause
+-->
+
 # install-mimic &mdash; overwrite and preserve ownership
 
 ## Description

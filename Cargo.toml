@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
+# SPDX-License-Identifier: BSD-2-Clause
+
 [package]
 name = "install-mimic"
 version = "0.4.1"
