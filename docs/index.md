@@ -5,7 +5,7 @@ SPDX-License-Identifier: BSD-2-Clause
 
 # Overwrite and preserve ownership
 
-\[[Home][ringlet-home] | [GitHub][github] | [ReadTheDocs][readthedocs]\]
+\[[Home][ringlet-home] | [Download](download.md) | [GitHub][github] | [ReadTheDocs][readthedocs]\]
 
 ## Description
 
@@ -35,12 +35,6 @@ Install a new file similar to a system file:
 ``` sh
 install-mimic -v -r /usr/bin/install-mimic install-none /usr/bin/
 ```
-
-## Download
-
-The source of the `install-mimic` utility may be obtained at
-[its devel.ringlet.net homepage.][ringlet-home]  It is developed in
-[a GitHub Git repository.][github]
 
 ## Contact
 
