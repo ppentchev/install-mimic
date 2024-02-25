@@ -68,6 +68,7 @@ These are the released versions of [install-mimic](index.md) available for downl
 - [install_mimic-0.1.0.tar.gz](https://devel.ringlet.net/files/misc/install-mimic/install_mimic-0.1.0.tar.gz)
   (with [a PGP signature](https://devel.ringlet.net/files/misc/install-mimic/install_mimic-0.1.0.tar.gz.asc))
 
+[0.4.1]: https://github.com/ppentchev/install-mimic/releases/tag/release%2F0.4.1
 [0.4.0]: https://github.com/ppentchev/install-mimic/releases/tag/release%2F0.4.0
 [0.3.1]: https://github.com/ppentchev/install-mimic/releases/tag/release%2F0.3.1
 [0.3.0]: https://github.com/ppentchev/install-mimic/releases/tag/release%2F0.3.0
