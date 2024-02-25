@@ -30,9 +30,29 @@ tab_size = 8
 indent_style = space
 indent_size = 4
 
+[*.sh]
+indent_style = tab
+tab_size = 8
+
 [*.t]
 indent_style = tab
 tab_size = 8
+
+[*.toml]
+indent_style = space
+indent_size = 2
+
+[*.yml]
+indent_style = space
+indent_size = 2
+
+[*.yaml]
+indent_style = space
+indent_size = 2
+
+[dep5]
+indent_style = space
+indent_size = 2
 
 [cpanfile]
 indent_style = space
@@ -41,3 +61,7 @@ indent_size = 4
 [Makefile]
 indent_style = tab
 tab_size = 8
+
+[tox.ini]
+indent_style = space
+indent_size = 2
