@@ -1,8 +1,8 @@
 # SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
 # SPDX-License-Identifier: BSD-2-Clause
 
-requires 'perl', '5.010';
-
-on 'test' => sub {
-    requires 'Test::More', '0.98';
-};
+[tool.test-stages]
+stages = [
+  "@check and @quick and not @manual",
+  "@check and not @manual",
+]

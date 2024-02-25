@@ -1,8 +1,9 @@
 # SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
 # SPDX-License-Identifier: BSD-2-Clause
 
-requires 'perl', '5.010';
+.tox/
+site/
+target/
 
-on 'test' => sub {
-    requires 'Test::More', '0.98';
-};
+install-mimic
+install-mimic.o

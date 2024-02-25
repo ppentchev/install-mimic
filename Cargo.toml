@@ -1,11 +1,24 @@
+# SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
+# SPDX-License-Identifier: BSD-2-Clause
+
 [package]
 name = "install-mimic"
-version = "0.4.0"
+version = "0.4.1"
+edition = "2021"
+rust-version = "1.58"
 authors = ["Peter Pentchev <roam@ringlet.net>"]
- 
+description = "Overwrite files preserving the destination's ownership and access mode"
+readme = "README.md"
+license = "BSD-2-Clause"
+repository = "https://gitlab.com/ppentchev/install-mimic"
+categories = ["command-line-utilities", "filesystem"]
+keywords = ["install", "file", "preserve"]
+
 [[bin]]
 name = "install-mimic"
 path = "install-mimic.rs"
 
 [dependencies]
-getopts = "0.2"
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+shell-words = "1.1"

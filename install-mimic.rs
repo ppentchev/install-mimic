@@ -1,166 +1,157 @@
 /*-
- * Copyright (c) 2016 - 2018  Peter Pentchev
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
- * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
+ * SPDX-License-Identifier: BSD-2-Clause
  */
-
-extern crate getopts;
 
 use std::env;
 use std::fs;
-use std::io;
-use std::io::Write;
+use std::io::ErrorKind;
 use std::os::unix::fs::MetadataExt;
 use std::path::Path;
 use std::process::Command;
 
-use getopts::Options;
+use anyhow::{bail, Context, Result};
+use clap::Parser;
 
-const USAGE_STR: &'static str = "Usage:	install-mimic [-v] [-r reffile] srcfile dstfile
-	install-mimic [-v] [-r reffile] file1 [file2...] directory
-	install-mimic -V | --version | -h | --help
-	install-mimic --features
+#[derive(Debug, Parser)]
+#[clap(version)]
+struct Cli {
+    /// Display the features supported by the program.
+    #[clap(long)]
+    features: bool,
 
-	-h	display program usage information and exit
-	-V	display program version information and exit
-	-r	specify a reference file to obtain the information from
-	-v	verbose operation; display diagnostic output";
+    /// Specify a reference file to obtain the information from.
+    #[clap(short)]
+    reffile: Option<String>,
 
-const VERSION_STR: &'static str = "0.4.0";
+    /// Verbose operation; display diagnostic output.
+    #[clap(short, long)]
+    verbose: bool,
 
-fn version()
-{
-	println!("install-mimic {}", VERSION_STR);
+    filenames: Vec<String>,
 }
 
-fn usage() -> !
-{
-	panic!("{}", USAGE_STR)
+const VERSION_STR: &str = env!("CARGO_PKG_VERSION");
+
+struct Config {
+    filenames: Vec<String>,
+    destination: String,
+    refname: Option<String>,
+    verbose: bool,
 }
 
-fn features()
-{
-	println!("Features: install-mimic={}", VERSION_STR);
+enum Mode {
+    Handled,
+    Install(Config),
 }
 
-fn stat_fatal(fname: &str) -> fs::Metadata
-{
-	match fs::metadata(fname) {
-		Err(e) => panic!("Could not examine {}: {}", fname, e),
-		Ok(m) => m,
-	}
+#[allow(clippy::print_stdout)]
+fn features() {
+    println!("Features: install-mimic={VERSION_STR}");
 }
 
-fn install_mimic(src: &str, dst: &str, refname: &Option<String>, verbose: bool)
-{
-	let filetoref = match *refname {
-		Some(ref s) => s.clone(),
-		None => String::from(dst),
-	};
-	let stat = stat_fatal(&filetoref);
-	let uid = stat.uid().to_string();
-	let gid = stat.gid().to_string();
-	let mode = format!("{:o}", stat.mode() & 0o7777);
-	let mut cmd = Command::new("install");
-	cmd .args(&["-c",
-	    "-o", &uid,
-	    "-g", &gid,
-	    "-m", &mode,
-	    "--", src, dst,
-	    ]);
-	if verbose {
-		println!("{:?}", cmd);
-	}
-	match cmd.status() {
-		Err(e) => panic!("Could not run install: {}", e),
-		Ok(m) => match m.success() {
-			false => panic!("Could not install {} as {}", src, dst),
-			true => m,
-		}
-	};
+fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
+    src: SP,
+    dst: DP,
+    refname: &Option<String>,
+    verbose: bool,
+) -> Result<()> {
+    let src_path = src.as_ref().to_str().with_context(|| {
+        format!(
+            "Could not build a source path from {src}",
+            src = src.as_ref().display()
+        )
+    })?;
+    let dst_path = dst.as_ref().to_str().with_context(|| {
+        format!(
+            "Could not build a destination path from {dst}",
+            dst = dst.as_ref().display()
+        )
+    })?;
+    let filetoref = match *refname {
+        Some(ref path) => path.clone(),
+        None => dst_path.to_owned(),
+    };
+    let stat =
+        fs::metadata(&filetoref).with_context(|| format!("Could not examine {filetoref}"))?;
+    let user_id = stat.uid().to_string();
+    let group_id = stat.gid().to_string();
+    let mode = format!("{mode:o}", mode = stat.mode() & 0o7777);
+    let prog_name = "install";
+    let args = [
+        "-c", "-o", &user_id, "-g", &group_id, "-m", &mode, "--", src_path, dst_path,
+    ];
+    let mut cmd = Command::new(prog_name);
+    cmd.args(args);
+    #[allow(clippy::print_stdout)]
+    if verbose {
+        println!("{prog_name} {args}", args = shell_words::join(args));
+    }
+    if !cmd.status().context("Could not run install")?.success() {
+        bail!("Could not install {src_path} as {dst_path}");
+    }
+    Ok(())
 }
 
-fn main()
-{
-	let args: Vec<String> = env::args().collect();
+fn parse_args() -> Result<Mode> {
+    let opts = Cli::parse();
+    if opts.features {
+        features();
+        return Ok(Mode::Handled);
+    }
 
-	let mut optargs = Options::new();
-	optargs.optflag("", "features", "display program features information and exit");
-	optargs.optflag("h", "help", "display program usage information and exit");
-	optargs.optopt("r", "", "specify a reference file to obtain the information from", "");
-	optargs.optflag("V", "version", "display program version information and exit");
-	optargs.optflag("v", "", "verbose operation; display diagnostic output");
-	let opts = match optargs.parse(&args[1..]) {
-		Err(e) => {
-			writeln!(io::stderr(), "{}", e).unwrap();
-			usage()
-		},
-		Ok(m) => m,
-	};
-	if opts.opt_present("V") {
-		version();
-	}
-	if opts.opt_present("h") {
-		println!("{}", USAGE_STR);
-	}
-	if opts.opt_present("features") {
-		features();
-	}
-	if opts.opt_present("h") || opts.opt_present("V") || opts.opt_present("features") {
-		return;
-	}
-	let refname = opts.opt_str("r");
-	let verbose = opts.opt_present("v");
-		
-	let lastidx = opts.free.len();
-	if lastidx < 2 {
-		usage();
-	}
-	let lastidx = lastidx - 1;
-	let lastarg = &opts.free[lastidx];
-	let is_dir = match Path::new(lastarg).exists() {
-		true => stat_fatal(lastarg).is_dir(),
-		false => match refname {
-			Some(_) => false,
-			None => usage(),
-		},
-	};
-	if is_dir {
-		let dstpath = Path::new(lastarg);
-		for f in &opts.free[0..lastidx] {
-			let basename = match Path::new(f).file_name() {
-				None => panic!("Invalid source filename {}", f),
-				Some(s) => s,
-			};
-			let dstname = match dstpath.join(Path::new(basename)).to_str() {
-				None => panic!("Could not build a destination path for {} in {}", f, dstpath.display()),
-				Some(s) => s,
-			}.to_string();
-			install_mimic(f, &dstname, &refname, verbose);
-		}
-	} else if lastidx != 1 {
-		usage();
-	} else {
-		install_mimic(&opts.free[0], lastarg, &refname, verbose);
-	}
+    let mut filenames = opts.filenames;
+    let destination = filenames
+        .pop()
+        .context("No source or destination paths specified")?;
+    if filenames.is_empty() {
+        bail!("At least one source and one destination path must be specified");
+    }
+    Ok(Mode::Install(Config {
+        filenames,
+        destination,
+        refname: opts.reffile,
+        verbose: opts.verbose,
+    }))
+}
+
+fn doit(cfg: &Config) -> Result<()> {
+    let is_dir = match fs::metadata(&cfg.destination) {
+        Err(err) if err.kind() == ErrorKind::NotFound => {
+            if cfg.refname.is_none() {
+                bail!(
+                    "The destination path {dst} does not exist and no -r specified",
+                    dst = cfg.destination
+                );
+            }
+            false
+        }
+        Err(err) => {
+            bail!("Could not examine {dst}: {err}", dst = cfg.destination);
+        }
+        Ok(data) => data.is_dir(),
+    };
+    if is_dir {
+        let dstpath: &Path = cfg.destination.as_ref();
+        for path in &cfg.filenames {
+            let pathref: &Path = path.as_ref();
+            let basename = pathref
+                .file_name()
+                .with_context(|| format!("Invalid source filename {path}"))?;
+            install_mimic(path, dstpath.join(basename), &cfg.refname, cfg.verbose)?;
+        }
+        Ok(())
+    } else {
+        match *cfg.filenames {
+            [ref source] => install_mimic(source, &cfg.destination, &cfg.refname, cfg.verbose),
+            _ => bail!("The destination path must be a directory if more than one source path is specified"),
+        }
+    }
+}
+
+fn main() -> Result<()> {
+    match parse_args().context("Could not parse the command-line arguments")? {
+        Mode::Handled => Ok(()),
+        Mode::Install(cfg) => doit(&cfg),
+    }
 }

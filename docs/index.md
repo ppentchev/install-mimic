@@ -5,7 +5,7 @@ SPDX-License-Identifier: BSD-2-Clause
 
 # Overwrite and preserve ownership
 
-\[[Home][ringlet-home] | [Download][ringlet-download] | [GitHub][github] | [ReadTheDocs][readthedocs]\]
+\[[Home][ringlet-home] | [Download](download.md) | [GitHub][github] | [ReadTheDocs][readthedocs]\]
 
 ## Description
 
@@ -46,4 +46,3 @@ hosted at [Ringlet][ringlet-home] with a copy at [ReadTheDocs][readthedocs].
 [github]: https://github.com/ppentchev/install-mimic "The install-mimic GitHub repository"
 [readthedocs]: https://install-mimic.readthedocs.io/ "The install-mimic ReadTheDocs page"
 [ringlet-home]: https://devel.ringlet.net/misc/install-mimic/ "The Ringlet install-mimic homepage"
-[ringlet-download]: https://devel.ringlet.net/misc/install-mimic/download/ "The Ringlet install-mimic download page"
