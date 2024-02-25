@@ -60,7 +60,6 @@ fn features() {
     println!("Features: install-mimic={VERSION_STR}");
 }
 
-#[allow(clippy::print_stdout)]
 fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
     src: SP,
     dst: DP,
@@ -94,6 +93,7 @@ fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
     ];
     let mut cmd = Command::new(prog_name);
     cmd.args(args);
+    #[allow(clippy::print_stdout)]
     if verbose {
         println!("{prog_name} {args}", args = shell_words::join(args));
     }
@@ -103,7 +103,6 @@ fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
     Ok(())
 }
 
-#[allow(clippy::print_stdout)]
 fn parse_args() -> Result<Mode> {
     let opts = Cli::parse();
     if opts.features {
