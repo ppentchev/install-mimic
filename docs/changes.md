@@ -12,10 +12,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Additions
+
+- Add an EditorConfig definitions file.
+- Start some MkDocs-based documentation.
+- Add a Tox configuration file for running the `reuse` SPDX check tool and
+  building the documentation.
+- Rust implementation:
+    - add the `run-clippy.sh` tool for running diagnostic checks
+
 ### Other changes
 
-- Rework the Rust implementation, bringing it up to date with
-  Rust edition 2021 and with other changes since it was introduced.
+- Switch to yearless copyright notices with my e-mail address.
+- Use SPDX copyright and license tags.
+- Rust implementation:
+    - rework it, bringing it up to date with Rust edition 2021 and with
+      other changes since it was introduced
+    - use the `shell-words` crate
+    - use the `clap` crate for command-line parsing
+    - use `anyhow` instead of `expect-exit`
+    - make the path to `cargo` configurable in the Makefile
 
 ## [0.4.0] - 2018-05-04
 
