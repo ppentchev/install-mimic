@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2016 - 2018, 2021  Peter Pentchev
+ * Copyright (c) Peter Pentchev <roam@ringlet.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

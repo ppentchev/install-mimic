@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2016 - 2018, 2022  Peter Pentchev
+# Copyright (c) Peter Pentchev <roam@ringlet.net>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
