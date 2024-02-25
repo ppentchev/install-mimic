@@ -39,7 +39,7 @@ install-mimic -v -r /usr/bin/install-mimic install-none /usr/bin/
 ## Download
 
 The source of the `install-mimic` utility may be obtained at
-[its devel.ringlet.net homepage.][devel]  It is developed in
+[its devel.ringlet.net homepage.][ringlet-home]  It is developed in
 [a GitHub Git repository.][github]
 
 ## Contact
