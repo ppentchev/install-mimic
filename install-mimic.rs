@@ -31,16 +31,6 @@ struct Cli {
     filenames: Vec<String>,
 }
 
-const USAGE_STR: &str = "Usage:	install-mimic [-v] [-r reffile] srcfile dstfile
-	install-mimic [-v] [-r reffile] file1 [file2...] directory
-	install-mimic -V | --version | -h | --help
-	install-mimic --features
-
-	-h	display program usage information and exit
-	-V	display program version information and exit
-	-r	specify a reference file to obtain the information from
-	-v	verbose operation; display diagnostic output";
-
 const VERSION_STR: &str = env!("CARGO_PKG_VERSION");
 
 struct Config {
@@ -111,9 +101,11 @@ fn parse_args() -> Result<Mode> {
     }
 
     let mut filenames = opts.filenames;
-    let destination = filenames.pop().context(USAGE_STR)?;
+    let destination = filenames
+        .pop()
+        .context("No source or destination paths specified")?;
     if filenames.is_empty() {
-        bail!("{USAGE_STR}");
+        bail!("At least one source and one destination path must be specified");
     }
     Ok(Mode::Install(Config {
         filenames,
@@ -127,7 +119,10 @@ fn doit(cfg: &Config) -> Result<()> {
     let is_dir = match fs::metadata(&cfg.destination) {
         Err(err) if err.kind() == ErrorKind::NotFound => {
             if cfg.refname.is_none() {
-                bail!("{USAGE_STR}");
+                bail!(
+                    "The destination path {dst} does not exist and no -r specified",
+                    dst = cfg.destination
+                );
             }
             false
         }
@@ -149,7 +144,7 @@ fn doit(cfg: &Config) -> Result<()> {
     } else {
         match *cfg.filenames {
             [ref source] => install_mimic(source, &cfg.destination, &cfg.refname, cfg.verbose),
-            _ => bail!("{USAGE_STR}"),
+            _ => bail!("The destination path must be a directory if more than one source path is specified"),
         }
     }
 }
