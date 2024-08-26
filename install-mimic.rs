@@ -68,10 +68,9 @@ fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
             dst = dst.as_ref().display()
         )
     })?;
-    let filetoref = match *refname {
-        Some(ref path) => path.clone(),
-        None => dst_path.to_owned(),
-    };
+    let filetoref = refname
+        .as_ref()
+        .map_or_else(|| dst_path.to_owned(), Clone::clone);
     let stat =
         fs::metadata(&filetoref).with_context(|| format!("Could not examine {filetoref}"))?;
     let user_id = stat.uid().to_string();
