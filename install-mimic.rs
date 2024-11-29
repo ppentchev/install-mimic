@@ -6,11 +6,11 @@
 use std::env;
 use std::fs;
 use std::io::ErrorKind;
-use std::os::unix::fs::MetadataExt;
+use std::os::unix::fs::MetadataExt as _;
 use std::path::Path;
 use std::process::Command;
 
-use anyhow::{bail, Context, Result};
+use anyhow::{bail, Context as _, Result};
 use clap::Parser;
 
 #[derive(Debug, Parser)]
