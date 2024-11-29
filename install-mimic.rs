@@ -53,7 +53,7 @@ fn features() {
 fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
     src: SP,
     dst: DP,
-    refname: &Option<String>,
+    refname: Option<&str>,
     verbose: bool,
 ) -> Result<()> {
     let src_path = src.as_ref().to_str().with_context(|| {
@@ -68,9 +68,7 @@ fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
             dst = dst.as_ref().display()
         )
     })?;
-    let filetoref = refname
-        .as_ref()
-        .map_or_else(|| dst_path.to_owned(), Clone::clone);
+    let filetoref = refname.map_or_else(|| dst_path.to_owned(), ToOwned::to_owned);
     let stat =
         fs::metadata(&filetoref).with_context(|| format!("Could not examine {filetoref}"))?;
     let user_id = stat.uid().to_string();
@@ -137,12 +135,17 @@ fn doit(cfg: &Config) -> Result<()> {
             let basename = pathref
                 .file_name()
                 .with_context(|| format!("Invalid source filename {path}"))?;
-            install_mimic(path, dstpath.join(basename), &cfg.refname, cfg.verbose)?;
+            install_mimic(
+                path,
+                dstpath.join(basename),
+                cfg.refname.as_deref(),
+                cfg.verbose,
+            )?;
         }
         Ok(())
     } else {
         match *cfg.filenames {
-            [ref source] => install_mimic(source, &cfg.destination, &cfg.refname, cfg.verbose),
+            [ref source] => install_mimic(source, &cfg.destination, cfg.refname.as_deref(), cfg.verbose),
             _ => bail!("The destination path must be a directory if more than one source path is specified"),
         }
     }
