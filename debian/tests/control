@@ -1,8 +1,15 @@
 Test-Command: env INSTALL_MIMIC='/usr/bin/install-mimic' prove -v t
-Depends: @, perl
-Features: test-name=upstream
+Depends:
+ perl,
+ @,
+Features:
+ test-name=upstream,
 
 Test-Command: feature-check install-mimic install-mimic
-Depends: @, feature-check
-Features: test-name=feature-check
-Restrictions: superficial
+Depends:
+ feature-check,
+ @,
+Features:
+ test-name=feature-check,
+Restrictions:
+ superficial,

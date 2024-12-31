@@ -12,10 +12,13 @@ Standards-Version: 4.7.0
 Homepage: https://devel.ringlet.net/misc/install-mimic/
 Vcs-Git: https://github.com/ppentchev/install-mimic.git -b debian/master
 Vcs-Browser: https://github.com/ppentchev/install-mimic/tree/debian/master
+X-Style: black
 
 Package: install-mimic
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
 Multi-Arch: foreign
 Description: overwrite files and preserve their ownership
  The install-mimic utility copies the specified files to the specified
