@@ -20,5 +20,6 @@ path = "install-mimic.rs"
 
 [dependencies]
 anyhow = "1"
-clap = { version = "4", features = ["derive"] }
+clap = "4"
+clap_derive = "4"
 shell-words = "1.1"

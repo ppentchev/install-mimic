@@ -11,7 +11,8 @@ use std::path::Path;
 use std::process::Command;
 
 use anyhow::{bail, Context as _, Result};
-use clap::Parser;
+use clap::Parser as _;
+use clap_derive::Parser;
 
 #[derive(Debug, Parser)]
 #[clap(version)]
