@@ -8,7 +8,7 @@ Build-Depends:
  dh-sequence-single-binary,
  dpkg-build-api (= 1),
  perl,
-Standards-Version: 4.6.2
+Standards-Version: 4.7.0
 Homepage: https://devel.ringlet.net/misc/install-mimic/
 Vcs-Git: https://github.com/ppentchev/install-mimic.git -b debian/master
 Vcs-Browser: https://github.com/ppentchev/install-mimic/tree/debian/master
