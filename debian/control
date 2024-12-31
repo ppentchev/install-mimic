@@ -3,12 +3,13 @@ Section: utils
 Priority: optional
 Maintainer: Peter Pentchev <roam@debian.org>
 Build-Depends:
- debhelper-compat (= 13),
+ debhelper (>> 13.15~),
  dh-package-notes,
  dh-sequence-single-binary,
  dpkg-build-api (= 1),
  perl,
 Standards-Version: 4.7.0
+X-DH-Compat: 14
 Homepage: https://devel.ringlet.net/misc/install-mimic/
 Vcs-Git: https://github.com/ppentchev/install-mimic.git -b debian/master
 Vcs-Browser: https://github.com/ppentchev/install-mimic/tree/debian/master
