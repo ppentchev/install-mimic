@@ -12,6 +12,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixes
+
+- Documentation:
+    - fix the 0.4.1 link on the downloads page
+
+### Other changes
+
+- Documentation:
+    - use `reuse` 4.x, switch to `REUSE.toml`
+    - drop the dependency on `mkdocstrings`, we do not use it
+- Rust implementation:
+    - minor changes suggested by Clippy
+    - use `clap_derive` explicitly
+
 ## [0.4.1] - 2024-02-26
 
 ### Additions
