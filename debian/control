@@ -3,7 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Peter Pentchev <roam@debian.org>
 Build-Depends:
- debhelper (>> 13.15~),
+ debhelper (>> 13.15.2~),
  dh-package-notes,
  dh-sequence-single-binary,
  dpkg-build-api (= 1),
@@ -17,9 +17,6 @@ X-Style: black
 
 Package: install-mimic
 Architecture: any
-Depends:
- ${misc:Depends},
- ${shlibs:Depends},
 Multi-Arch: foreign
 Description: overwrite files and preserve their ownership
  The install-mimic utility copies the specified files to the specified
