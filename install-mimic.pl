@@ -7,6 +7,7 @@ use v5.10;    ## no critic qw(ValuesAndExpressions::ProhibitVersionStrings)
 use strict;
 use warnings;
 
+use English qw(CHILD_ERROR ERRNO RS -no_match_vars);
 use Fcntl ':mode';
 use File::Basename;
 use Getopt::Std;
@@ -61,21 +62,21 @@ sub run_command(@) {
 	debug "@cmd";
 	my $pid = open my $pipe, '-|';
 	if ( !defined $pid ) {
-		die "Could not fork for '@cmd': $!\n";
+		die "Could not fork for '@cmd': $ERRNO\n";
 	}
 	elsif ( $pid == 0 ) {
 		exec { $cmd[0] } @cmd;
-		die "Could not run '@cmd': $!\n";
+		die "Could not run '@cmd': $ERRNO\n";
 	}
 
 	my $output;
 	{
-		local $/ = undef;
+		local $RS = undef;
 		$output = <$pipe>;
 	}
 	my $res    = close $pipe;
-	my $msg    = $!;
-	my $status = $?;
+	my $msg    = $ERRNO;
+	my $status = $CHILD_ERROR;
 	check_wait_result $status, $pid, "@cmd";
 	if ( !$res ) {
 		die "Some error occurred closing the pipe from '@cmd': $msg\n";
@@ -88,7 +89,7 @@ sub install_mimic($ $; $) {
 
 	$ref //= $dst;
 	my @st = stat $ref
-		or die "Could not obtain information about $ref: $!\n";
+		or die "Could not obtain information about $ref: $ERRNO\n";
 	my $res = run_command 'install', '-c', '-o', $st[4], '-g', $st[5],
 		'-m', sprintf( '%04o', S_IMODE( $st[2] ) ), $src, $dst;
 	debug $res;
