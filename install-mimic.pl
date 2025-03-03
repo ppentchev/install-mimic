@@ -25,7 +25,7 @@ sub debug($) {    ## no critic qw(Subroutines::RequireArgUnpacking)
 
 	my ($msg) = @_;
 	return unless defined $msg && length $msg;
-	$msg =~ s/\n*\Z//;
+	$msg =~ s/ \n* \Z //x;
 	say $msg;
 	return;
 }
