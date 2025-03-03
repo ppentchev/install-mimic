@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
 # SPDX-License-Identifier: BSD-2-Clause
 
-severity = 3
+severity = 2
 verbose = 11
 theme = core
 
@@ -11,3 +11,6 @@ theme = core
 # We do have a `close()` in `run_command()`, just a bit further down
 [InputOutput::RequireBriefOpen]
 lines = 14
+
+# Our use of these is idiomatic enough
+[-ControlStructures::ProhibitPostfixControls]
