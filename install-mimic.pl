@@ -67,7 +67,7 @@ sub run_command(@) {
 
 	my $output;
 	{
-		local $/;
+		local $/ = undef;
 		$output = <$pipe>;
 	}
 	my $res    = close $pipe;
