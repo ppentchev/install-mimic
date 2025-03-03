@@ -10,6 +10,7 @@ use warnings;
 use English qw(CHILD_ERROR ERRNO RS -no_match_vars);
 use Fcntl ':mode';
 use File::Basename;
+use File::stat;
 use Getopt::Std;
 use POSIX ':sys_wait_h';
 
@@ -88,10 +89,10 @@ sub install_mimic($ $; $) {
 	my ( $src, $dst, $ref ) = @_;
 
 	$ref //= $dst;
-	my @st = stat $ref
+	my $st = stat $ref
 		or die "Could not obtain information about $ref: $ERRNO\n";
-	my $res = run_command 'install', '-c', '-o', $st[4], '-g', $st[5],
-		'-m', sprintf( '%04o', S_IMODE( $st[2] ) ), $src, $dst;
+	my $res = run_command 'install', '-c', '-o', $st->uid, '-g', $st->gid,
+		'-m', sprintf( '%04o', S_IMODE( $st->mode ) ), $src, $dst;
 	debug $res;
 	return;
 }
