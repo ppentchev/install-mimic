@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
 # SPDX-License-Identifier: BSD-2-Clause
 
-severity = 4
+severity = 3
 verbose = 11
 theme = core
 

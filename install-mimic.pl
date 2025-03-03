@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
 # SPDX-License-Identifier: BSD-2-Clause
 
-use v5.10;
+use v5.10;    ## no critic qw(ValuesAndExpressions::ProhibitVersionStrings)
 use strict;
 use warnings;
 
@@ -110,7 +110,7 @@ EOUSAGE
 		;
 
 	if ($err) {
-		die $s;
+		die $s;    ## no critic qw(ErrorHandling::RequireCarping)
 	}
 	else {
 		print "$s";
