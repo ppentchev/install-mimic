@@ -20,7 +20,7 @@ sub version() {
 	return;
 }
 
-sub debug($) {
+sub debug($) {    ## no critic qw(Subroutines::RequireArgUnpacking)
 	return unless $verbose;
 
 	my ($msg) = @_;

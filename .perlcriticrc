@@ -1,9 +1,13 @@
 # SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
 # SPDX-License-Identifier: BSD-2-Clause
 
-severity = 5
+severity = 4
 verbose = 11
 theme = core
 
 # We still need those for type checking
 [-Subroutines::ProhibitSubroutinePrototypes]
+
+# We do have a `close()` in `run_command()`, just a bit further down
+[InputOutput::RequireBriefOpen]
+lines = 14
