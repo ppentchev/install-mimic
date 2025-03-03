@@ -12,11 +12,14 @@ use File::Basename;
 use Getopt::Std;
 use POSIX ':sys_wait_h';
 
-my $version_string = '0.4.1';
-my $verbose        = 0;
+# We do pass a constant to `version->declare()`
+## no critic qw(ValuesAndExpressions::RequireConstantVersion)
+use version; our $VERSION = version->declare('0.4.1');
+
+my $verbose = 0;
 
 sub version() {
-	say "install-mimic $version_string";
+	say "install-mimic $VERSION";
 	return;
 }
 
@@ -143,7 +146,7 @@ MAIN:
 	version if $Vflag;
 	usage 0 if $hflag;
 	if ($features) {
-		say "Features: install-mimic=$version_string";
+		say "Features: install-mimic=$VERSION";
 	}
 	exit 0 if $Vflag || $hflag || $features;
 
