@@ -3,3 +3,6 @@
 
 [PerlTidy]
 select = install-mimic.pl
+
+[PerlCritic]
+select = install-mimic.pl
