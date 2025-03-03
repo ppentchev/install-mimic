@@ -82,6 +82,9 @@ install:	all
 		${INSTALL_DATA} ${MAN1} ${DESTDIR}${MANDIR}1
 
 test-perl:	install-mimic.pl
+		@[ -z "$$(command -v tidyall || true)" ] || printf "\n===== Validating the Perl 5 implementation\n\n"
+		@[ -z "$$(command -v tidyall || true)" ] || tidyall -a --check-only
+
 		@printf "\n===== Testing the Perl 5 implementation\n\n"
 		[ -x install-mimic.pl ] || chmod +x install-mimic.pl
 		env INSTALL_MIMIC=./install-mimic.pl prove t
