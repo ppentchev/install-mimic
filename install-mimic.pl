@@ -60,7 +60,7 @@ sub check_wait_result($ $ $) {
 sub run_command(@) {
 	my @cmd = @_;
 	debug "@cmd";
-	my $pid = open my $pipe, '-|';
+	my $pid = open my $pipe, q{-|};
 	if ( !defined $pid ) {
 		die "Could not fork for '@cmd': $ERRNO\n";
 	}
@@ -130,14 +130,14 @@ MAIN:
 	my $Vflag = $opts{V};
 	my $hflag = $opts{h};
 	my $features;
-	if ( defined $opts{'-'} ) {
-		if ( $opts{'-'} eq 'features' ) {
+	if ( defined $opts{q{-}} ) {
+		if ( $opts{q{-}} eq 'features' ) {
 			$features = 1;
 		}
-		elsif ( $opts{'-'} eq 'help' ) {
+		elsif ( $opts{q{-}} eq 'help' ) {
 			$hflag = 1;
 		}
-		elsif ( $opts{'-'} eq 'version' ) {
+		elsif ( $opts{q{-}} eq 'version' ) {
 			$Vflag = 1;
 		}
 		else {
