@@ -17,6 +17,7 @@ my $verbose        = 0;
 
 sub version() {
 	say "install-mimic $version_string";
+	return;
 }
 
 sub debug($) {
@@ -26,6 +27,7 @@ sub debug($) {
 	return unless defined $msg && length $msg;
 	$msg =~ s/\n*\Z//;
 	say $msg;
+	return;
 }
 
 sub check_wait_result($ $ $) {
@@ -87,6 +89,7 @@ sub install_mimic($ $; $) {
 	my $res = run_command 'install', '-c', '-o', $st[4], '-g', $st[5],
 		'-m', sprintf( '%04o', S_IMODE( $st[2] ) ), $src, $dst;
 	debug $res;
+	return;
 }
 
 sub usage(;$) {
@@ -112,6 +115,7 @@ EOUSAGE
 	else {
 		print "$s";
 	}
+	return;
 }
 
 MAIN:
