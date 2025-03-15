@@ -16,7 +16,7 @@ use POSIX ':sys_wait_h';
 
 # We do pass a constant to `version->declare()`
 ## no critic qw(ValuesAndExpressions::RequireConstantVersion)
-use version; our $VERSION = version->declare('0.4.1');
+use version; our $VERSION = version->declare('0.4.2');
 
 my $verbose = 0;
 

@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.2] - 2025-03-15
+
 ### Fixes
 
 - Perl implementation:
@@ -118,7 +120,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First public release.
 
-[Unreleased]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.1...master
+[Unreleased]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.2...master
+[0.4.2]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.0...release%2F0.4.2
 [0.4.1]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.0...release%2F0.4.1
 [0.4.0]: https://github.com/ppentchev/install-mimic/compare/release%2F0.3.1...release%2F0.4.0
 [0.3.1]: https://github.com/ppentchev/install-mimic/compare/release%2F0.3.0...release%2F0.3.1

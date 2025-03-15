@@ -3,7 +3,7 @@
 
 [package]
 name = "install-mimic"
-version = "0.4.1"
+version = "0.4.2"
 edition = "2024"
 rust-version = "1.85"
 authors = ["Peter Pentchev <roam@ringlet.net>"]
