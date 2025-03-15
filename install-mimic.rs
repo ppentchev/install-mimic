@@ -46,7 +46,7 @@ enum Mode {
     Install(Config),
 }
 
-#[allow(clippy::print_stdout)]
+#[expect(clippy::print_stdout, reason = "This is the purpose of this function")]
 fn features() {
     println!("Features: install-mimic={VERSION_STR}");
 }
@@ -81,7 +81,7 @@ fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
     ];
     let mut cmd = Command::new(prog_name);
     cmd.args(args);
-    #[allow(clippy::print_stdout)]
+    #[expect(clippy::print_stdout, reason = "This is the purpose of this function")]
     if verbose {
         println!("{prog_name} {args}", args = shell_words::join(args));
     }
