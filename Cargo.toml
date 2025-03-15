@@ -4,8 +4,8 @@
 [package]
 name = "install-mimic"
 version = "0.4.1"
-edition = "2021"
-rust-version = "1.81"
+edition = "2024"
+rust-version = "1.85"
 authors = ["Peter Pentchev <roam@ringlet.net>"]
 description = "Overwrite files preserving the destination's ownership and access mode"
 readme = "README.md"

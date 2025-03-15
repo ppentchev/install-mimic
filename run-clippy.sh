@@ -49,6 +49,7 @@ set -x
 	-W rust-2018-compatibility \
 	-W rust-2018-idioms \
 	-W rust-2021-compatibility \
+	-W rust-2024-compatibility \
 	-W unused \
 	-W clippy::restriction \
 		-A clippy::arbitrary_source_item_ordering \
