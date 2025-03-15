@@ -104,6 +104,7 @@ test-all:	test-c test-perl test-rust
 clean:
 		${RM} ${PROG} ${PROG}.o ${MAN1}
 		[ ! -d "target" ] || ${CARGO} clean
+		[ ! -d .tidyall.d ] || rm -rf .tidyall.d
 
 distclean:	clean
 		${RM} Cargo.lock
