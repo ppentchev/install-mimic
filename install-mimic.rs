@@ -6,12 +6,13 @@
 use std::env;
 use std::fs;
 use std::io::ErrorKind;
-use std::os::unix::fs::MetadataExt;
+use std::os::unix::fs::MetadataExt as _;
 use std::path::Path;
 use std::process::Command;
 
-use anyhow::{bail, Context, Result};
-use clap::Parser;
+use anyhow::{bail, Context as _, Result};
+use clap::Parser as _;
+use clap_derive::Parser;
 
 #[derive(Debug, Parser)]
 #[clap(version)]
@@ -45,7 +46,7 @@ enum Mode {
     Install(Config),
 }
 
-#[allow(clippy::print_stdout)]
+#[expect(clippy::print_stdout, reason = "This is the purpose of this function")]
 fn features() {
     println!("Features: install-mimic={VERSION_STR}");
 }
@@ -53,7 +54,7 @@ fn features() {
 fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
     src: SP,
     dst: DP,
-    refname: &Option<String>,
+    refname: Option<&str>,
     verbose: bool,
 ) -> Result<()> {
     let src_path = src.as_ref().to_str().with_context(|| {
@@ -68,10 +69,7 @@ fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
             dst = dst.as_ref().display()
         )
     })?;
-    let filetoref = match *refname {
-        Some(ref path) => path.clone(),
-        None => dst_path.to_owned(),
-    };
+    let filetoref = refname.map_or_else(|| dst_path.to_owned(), ToOwned::to_owned);
     let stat =
         fs::metadata(&filetoref).with_context(|| format!("Could not examine {filetoref}"))?;
     let user_id = stat.uid().to_string();
@@ -83,7 +81,7 @@ fn install_mimic<SP: AsRef<Path>, DP: AsRef<Path>>(
     ];
     let mut cmd = Command::new(prog_name);
     cmd.args(args);
-    #[allow(clippy::print_stdout)]
+    #[expect(clippy::print_stdout, reason = "This is the purpose of this function")]
     if verbose {
         println!("{prog_name} {args}", args = shell_words::join(args));
     }
@@ -138,12 +136,17 @@ fn doit(cfg: &Config) -> Result<()> {
             let basename = pathref
                 .file_name()
                 .with_context(|| format!("Invalid source filename {path}"))?;
-            install_mimic(path, dstpath.join(basename), &cfg.refname, cfg.verbose)?;
+            install_mimic(
+                path,
+                dstpath.join(basename),
+                cfg.refname.as_deref(),
+                cfg.verbose,
+            )?;
         }
         Ok(())
     } else {
         match *cfg.filenames {
-            [ref source] => install_mimic(source, &cfg.destination, &cfg.refname, cfg.verbose),
+            [ref source] => install_mimic(source, &cfg.destination, cfg.refname.as_deref(), cfg.verbose),
             _ => bail!("The destination path must be a directory if more than one source path is specified"),
         }
     }

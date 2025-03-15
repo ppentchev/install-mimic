@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
+# SPDX-License-Identifier: BSD-2-Clause
+
+version = 1
+SPDX-PackageName = "install-mimic"
+SPDX-PackageSupplier = "Peter Pentchev <roam@ringlet.net>"
+SPDX-PackageDownloadLocation = "https://devel.ringlet.net/misc/install-mimic/"
+
+[[annotations]]
+path = [
+  "Cargo.lock",
+  "uv.lock",
+]
+SPDX-FileCopyrightText = "Peter Pentchev <roam@ringlet.net>"
+SPDX-License-Identifier = "BSD-2-Clause"

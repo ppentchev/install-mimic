@@ -3,9 +3,9 @@
 
 [package]
 name = "install-mimic"
-version = "0.4.1"
-edition = "2021"
-rust-version = "1.58"
+version = "0.4.2"
+edition = "2024"
+rust-version = "1.85"
 authors = ["Peter Pentchev <roam@ringlet.net>"]
 description = "Overwrite files preserving the destination's ownership and access mode"
 readme = "README.md"
@@ -20,5 +20,6 @@ path = "install-mimic.rs"
 
 [dependencies]
 anyhow = "1"
-clap = { version = "4", features = ["derive"] }
+clap = "4"
+clap_derive = "4"
 shell-words = "1.1"

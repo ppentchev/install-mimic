@@ -38,6 +38,7 @@ while getopts 'c:n' o; do
 done
 shift "$((OPTIND - 1))"
 
+# The list of enabled and disabled lints is synced with Rust 1.85.
 set -x
 "$cargo" clippy \
 	--tests \
@@ -48,8 +49,10 @@ set -x
 	-W rust-2018-compatibility \
 	-W rust-2018-idioms \
 	-W rust-2021-compatibility \
+	-W rust-2024-compatibility \
 	-W unused \
 	-W clippy::restriction \
+		-A clippy::arbitrary_source_item_ordering \
 		-A clippy::blanket_clippy_restriction_lints \
 		-A clippy::implicit_return \
 		-A clippy::ref_patterns \

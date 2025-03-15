@@ -12,6 +12,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.2] - 2025-03-15
+
+### Fixes
+
+- Perl implementation:
+    - various fixes suggested by `perlcritic`
+- Documentation:
+    - fix the 0.4.1 link on the downloads page
+
+### Other changes
+
+- Documentation:
+    - use `reuse` 5.x, switch to `REUSE.toml`
+    - drop the dependency on `mkdocstrings`, we do not use it
+    - use `uvoxen` to configure and run tests
+- Perl implementation:
+    - reformat the source code using `perltidy`
+    - various fixes suggested by `perlcritic`
+    - run `perltidy` and `perlcritic` via `tidyall` in the `test-perl` target
+- Rust implementation:
+    - declare MSRV 1.85 for the Rust 2024 edition
+    - minor changes suggested by Clippy
+    - use `clap_derive` explicitly
+
 ## [0.4.1] - 2024-02-26
 
 ### Additions
@@ -96,7 +120,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First public release.
 
-[Unreleased]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.1...master
+[Unreleased]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.2...master
+[0.4.2]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.0...release%2F0.4.2
 [0.4.1]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.0...release%2F0.4.1
 [0.4.0]: https://github.com/ppentchev/install-mimic/compare/release%2F0.3.1...release%2F0.4.0
 [0.3.1]: https://github.com/ppentchev/install-mimic/compare/release%2F0.3.0...release%2F0.3.1
