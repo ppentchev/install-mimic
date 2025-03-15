@@ -50,6 +50,7 @@ set -x
 	-W rust-2021-compatibility \
 	-W unused \
 	-W clippy::restriction \
+		-A clippy::arbitrary_source_item_ordering \
 		-A clippy::blanket_clippy_restriction_lints \
 		-A clippy::implicit_return \
 		-A clippy::ref_patterns \
