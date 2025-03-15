@@ -7,6 +7,9 @@ SPDX-PackageSupplier = "Peter Pentchev <roam@ringlet.net>"
 SPDX-PackageDownloadLocation = "https://devel.ringlet.net/misc/install-mimic/"
 
 [[annotations]]
-path = "Cargo.lock"
+path = [
+  "Cargo.lock",
+  "uv.lock",
+]
 SPDX-FileCopyrightText = "Peter Pentchev <roam@ringlet.net>"
 SPDX-License-Identifier = "BSD-2-Clause"
