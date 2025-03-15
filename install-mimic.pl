@@ -21,7 +21,8 @@ use version; our $VERSION = version->declare('0.4.1');
 my $verbose = 0;
 
 sub version() {
-	say "install-mimic $VERSION";
+	say "install-mimic $VERSION"
+		or die "Could not write to the standard output stream: $EVAL_ERROR\n";
 	return;
 }
 
@@ -31,7 +32,7 @@ sub debug($) {    ## no critic qw(Subroutines::RequireArgUnpacking)
 	my ($msg) = @_;
 	return unless defined $msg && length $msg;
 	$msg =~ s/ \n* \Z //xms;
-	say $msg;
+	say $msg or die "Could not write to the standard error stream: $EVAL_ERROR\n";
 	return;
 }
 
@@ -118,7 +119,7 @@ EOUSAGE
 		die $s;    ## no critic qw(ErrorHandling::RequireCarping)
 	}
 	else {
-		print "$s";
+		print "$s" or die "Could not write to the standard output stream: $EVAL_ERROR\n";
 	}
 	return;
 }
@@ -148,7 +149,8 @@ MAIN:
 	version if $Vflag;
 	usage 0 if $hflag;
 	if ($features) {
-		say "Features: install-mimic=$VERSION";
+		say "Features: install-mimic=$VERSION"
+			or die "Could not write to the standard output stream: $EVAL_ERROR\n";
 	}
 	exit 0 if $Vflag || $hflag || $features;
 
