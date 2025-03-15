@@ -74,6 +74,7 @@ ${MAN1}:	${PROG}.1
 
 ${PROG_RS}:	${PROG}.rs
 		${CARGO} build
+		./run-clippy.sh -c "${CARGO}" -n
 
 install:	all
 		${MKDIR} ${DESTDIR}${BINDIR}
