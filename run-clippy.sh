@@ -38,6 +38,7 @@ while getopts 'c:n' o; do
 done
 shift "$((OPTIND - 1))"
 
+# The list of enabled and disabled lints is synced with Rust 1.85.
 set -x
 "$cargo" clippy \
 	--tests \
