@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
 # SPDX-License-Identifier: BSD-2-Clause
 
-severity = 2
+severity = 1
 verbose = 11
 theme = core
 
@@ -14,3 +14,6 @@ lines = 14
 
 # Our use of these is idiomatic enough
 [-ControlStructures::ProhibitPostfixControls]
+
+[Documentation::PodSpelling]
+spell_command = aspell --lang=en_US list

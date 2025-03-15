@@ -86,7 +86,7 @@ sub run_command(@) {
 	return $output;
 }
 
-sub install_mimic($ $; $) {
+sub install_mimic($ $; $) {    ## no critic qw(ValuesAndExpressions::RequireInterpolationOfMetachars)
 	my ( $src, $dst, $ref ) = @_;
 
 	$ref //= $dst;
