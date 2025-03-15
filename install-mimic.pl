@@ -129,30 +129,30 @@ MAIN:
 	my %opts;
 
 	getopts( 'hr:Vv-:', \%opts ) or usage;
-	my $Vflag = $opts{V};
-	my $hflag = $opts{h};
-	my $features;
+	my $version_flag = $opts{V};
+	my $help_flag    = $opts{h};
+	my $features_flag;
 	if ( defined $opts{q{-}} ) {
 		if ( $opts{q{-}} eq 'features' ) {
-			$features = 1;
+			$features_flag = 1;
 		}
 		elsif ( $opts{q{-}} eq 'help' ) {
-			$hflag = 1;
+			$help_flag = 1;
 		}
 		elsif ( $opts{q{-}} eq 'version' ) {
-			$Vflag = 1;
+			$version_flag = 1;
 		}
 		else {
 			usage;
 		}
 	}
-	version if $Vflag;
-	usage 0 if $hflag;
-	if ($features) {
+	version if $version_flag;
+	usage 0 if $help_flag;
+	if ($features_flag) {
 		say "Features: install-mimic=$VERSION"
 			or die "Could not write to the standard output stream: $EVAL_ERROR\n";
 	}
-	exit 0 if $Vflag || $hflag || $features;
+	exit 0 if $version_flag || $help_flag || $features_flag;
 
 	$verbose = $opts{v};
 
