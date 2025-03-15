@@ -1,4 +1,4 @@
-install-mimic (0.4.2-1) UNRELEASED; urgency=medium
+install-mimic (0.4.2-1) unstable; urgency=medium
 
   * Declare compliance with Policy 4.7.2 with no changes.
   * Add Salsa CI configuration.
@@ -7,7 +7,7 @@ install-mimic (0.4.2-1) UNRELEASED; urgency=medium
     Debian 12.x (bookworm).
   * New upstream release.
 
- -- Peter Pentchev <roam@debian.org>  Mon, 03 Mar 2025 15:41:19 +0200
+ -- Peter Pentchev <roam@debian.org>  Sat, 15 Mar 2025 11:30:34 +0200
 
 install-mimic (0.4.1-2) unstable; urgency=medium
 
