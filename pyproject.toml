@@ -18,6 +18,15 @@ testenv-uvoxen = [
   "uvoxen >= 0.1.1, < 0.2",
 ]
 
+[tool.publync.format.version]
+major = 0
+minor = 1
+
+[tool.publync.build.tox]
+
+[tool.publync.sync.rsync]
+remote = "marla.ludost.net:vhosts/devel.ringlet.net/public_html/misc/install-mimic"
+
 [tool.test-stages]
 stages = [
   "@check and @quick and not @manual",
