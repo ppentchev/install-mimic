@@ -42,7 +42,7 @@ sub check_wait_result($ $ $) {
 	if ( WIFEXITED($stat) ) {
 		if ( WEXITSTATUS($stat) != 0 ) {
 			die "Program '$name' (pid $pid) exited with "
-				. "non-zero status "
+				. 'non-zero status '
 				. WEXITSTATUS($stat) . "\n";
 		}
 	}
