@@ -14,15 +14,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixes
 
+- Perl implementation:
+    - various fixes suggested by `perlcritic`
 - Documentation:
     - fix the 0.4.1 link on the downloads page
 
 ### Other changes
 
 - Documentation:
-    - use `reuse` 4.x, switch to `REUSE.toml`
+    - use `reuse` 5.x, switch to `REUSE.toml`
     - drop the dependency on `mkdocstrings`, we do not use it
+    - use `uvoxen` to configure and run tests
+- Perl implementation:
+    - reformat the source code using `perltidy`
+    - various fixes suggested by `perlcritic`
+    - run `perltidy` and `perlcritic` via `tidyall` in the `test-perl` target
 - Rust implementation:
+    - declare MSRV 1.85 for the Rust 2024 edition
     - minor changes suggested by Clippy
     - use `clap_derive` explicitly
 
