@@ -14,7 +14,7 @@ use anyhow::{Context as _, Result, bail};
 use clap::Parser as _;
 use clap_derive::Parser;
 
-#[derive(Debug, Parser)]
+#[derive(Parser)]
 #[clap(version)]
 struct Cli {
     /// Display the features supported by the program.
