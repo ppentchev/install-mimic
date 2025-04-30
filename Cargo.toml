@@ -23,3 +23,6 @@ anyhow = "1"
 clap = "4"
 clap_derive = "4"
 shell-words = "1.1"
+
+[dev-dependencies]
+camino = "1.1.9"

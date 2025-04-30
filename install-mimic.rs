@@ -165,3 +165,103 @@ fn main() -> Result<()> {
         Mode::Install(cfg) => doit(&cfg),
     }
 }
+
+#[cfg(test)]
+#[expect(clippy::print_stdout, reason = "this is a test suite")]
+#[expect(clippy::use_debug, reason = "this is a test suite")]
+mod tests {
+    use std::env;
+    use std::io::ErrorKind as IoErrorKind;
+    use std::process::{Command, Stdio};
+    use std::sync::LazyLock;
+
+    use anyhow::{Context as _, Result, anyhow, bail};
+    use camino::{Utf8Path, Utf8PathBuf};
+
+    static PATH: LazyLock<Result<Utf8PathBuf>> = LazyLock::new(|| {
+        let current = Utf8PathBuf::from_path_buf(
+            env::current_exe().context("Could not get the current executable file's path")?,
+        )
+        .map_err(|path| {
+            anyhow!(
+                "Could not represent the current executable file's path {path} as UTF-8",
+                path = path.display()
+            )
+        })?;
+        let exe_dir = {
+            let basedir = current
+                .parent()
+                .with_context(|| format!("Could not get the parent directory of {current}"))?;
+            if basedir
+                .file_name()
+                .with_context(|| format!("Could not get the base name of {basedir}"))?
+                == "deps"
+            {
+                basedir
+                    .parent()
+                    .with_context(|| format!("Could not get the parent directory of {basedir}"))?
+            } else {
+                basedir
+            }
+        };
+        let res = exe_dir.join("install-mimic");
+        if !res.is_file() {
+            bail!("Expected a file at {res}");
+        }
+        Ok(res)
+    });
+
+    fn get_exe_path() -> Result<&'static Utf8Path> {
+        match PATH.as_deref() {
+            Ok(res) => Ok(res),
+            Err(err) => bail!("{err}"),
+        }
+    }
+
+    #[test]
+    fn test_prove() -> Result<()> {
+        println!();
+        let path = get_exe_path()?;
+
+        // See if the 'prove' command even works
+        let prove_path = "prove";
+        match Command::new(prove_path)
+            .args(["-V"])
+            .stdout(Stdio::piped())
+            .stderr(Stdio::inherit())
+            .output()
+        {
+            Err(err) if err.kind() == IoErrorKind::NotFound => {
+                println!("No '{prove_path}' command at all");
+                return Ok(());
+            }
+            Err(err) => bail!(
+                "Could not run '{prove_path}' at all: {kind}: {err}",
+                kind = err.kind()
+            ),
+            Ok(output) if !output.status.success() => bail!("'{prove_path} -V' failed"),
+            Ok(output) => {
+                let contents = String::from_utf8(output.stdout).with_context(|| {
+                    format!("Could not decode the output of '{prove_path} -V' as valid UTF-8")
+                })?;
+                println!("Got '{prove_path} -V' output {contents:?}");
+                if !contents.starts_with("TAP::Harness") {
+                    bail!(
+                        "The output of '{prove_path} -V' did not start with 'TAP::Harness': {contents}"
+                    )
+                }
+            }
+        }
+
+        if !Command::new(prove_path)
+            .args(["-v", "t"])
+            .env("INSTALL_MIMIC", path)
+            .status()
+            .with_context(|| format!("Could not run '{prove_path} -v t'"))?
+            .success()
+        {
+            bail!("The TAP test suite failed");
+        }
+        Ok(())
+    }
+}
