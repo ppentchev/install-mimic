@@ -10,7 +10,7 @@ use std::os::unix::fs::MetadataExt as _;
 use std::path::Path;
 use std::process::Command;
 
-use anyhow::{bail, Context as _, Result};
+use anyhow::{Context as _, Result, bail};
 use clap::Parser as _;
 use clap_derive::Parser;
 
@@ -146,8 +146,15 @@ fn doit(cfg: &Config) -> Result<()> {
         Ok(())
     } else {
         match *cfg.filenames {
-            [ref source] => install_mimic(source, &cfg.destination, cfg.refname.as_deref(), cfg.verbose),
-            _ => bail!("The destination path must be a directory if more than one source path is specified"),
+            [ref source] => install_mimic(
+                source,
+                &cfg.destination,
+                cfg.refname.as_deref(),
+                cfg.verbose,
+            ),
+            _ => bail!(
+                "The destination path must be a directory if more than one source path is specified"
+            ),
         }
     }
 }
