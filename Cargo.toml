@@ -19,7 +19,7 @@ name = "install-mimic"
 path = "install-mimic.rs"
 
 [dependencies]
-anyhow = "1"
+eyre = "0.6.12"
 clap = "4"
 clap_derive = "4"
 shell-words = "1.1"
