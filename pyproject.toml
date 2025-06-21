@@ -15,7 +15,7 @@ testenv-reuse = [
   "reuse >= 5, < 6",
 ]
 testenv-uvoxen = [
-  "uvoxen >= 0.1.1, < 0.2",
+  "uvoxen >= 0.2.1, < 0.3",
 ]
 
 [tool.publync.format.version]
@@ -34,6 +34,7 @@ stages = [
 ]
 
 [tool.uvoxen]
+mediaType = "vnd.ringlet.devel.uvoxen.config/uvoxen.v0.3+toml"
 build-project = false
 
 envlist = [
@@ -41,10 +42,6 @@ envlist = [
   "uvoxen-sync-check",
   "docs",
 ]
-
-[tool.uvoxen.format.version]
-major = 0
-minor = 2
 
 [tool.uvoxen.req]
 header = """
