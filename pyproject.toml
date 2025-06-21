@@ -18,9 +18,8 @@ testenv-uvoxen = [
   "uvoxen >= 0.2.1, < 0.3",
 ]
 
-[tool.publync.format.version]
-major = 0
-minor = 1
+[tool.publync]
+mediaType = "vnd.ringlet.misc.publync.config/publync.v0.1+toml"
 
 [tool.publync.build.tox]
 
