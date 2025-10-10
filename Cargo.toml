@@ -19,10 +19,8 @@ name = "install-mimic"
 path = "install-mimic.rs"
 
 [dependencies]
+camino = "1.1.6"
 eyre = "0.6.12"
 clap = "4.5.23"
 clap_derive = "4.5.18"
 shell-words = "1.1"
-
-[dev-dependencies]
-camino = "1.1.6"
