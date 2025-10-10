@@ -20,8 +20,8 @@ path = "install-mimic.rs"
 
 [dependencies]
 eyre = "0.6.12"
-clap = "4.0.8"
-clap_derive = "4.0.8"
+clap = "4.5.23"
+clap_derive = "4.5.18"
 shell-words = "1.1"
 
 [dev-dependencies]
