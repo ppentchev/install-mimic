@@ -73,8 +73,8 @@ ${MAN1}:	${PROG}.1
 		${GZIP} -cn9 ${PROG}.1 > ${MAN1} || (rm -f -- ${MAN1}; false)
 
 ${PROG_RS}:	${PROG}.rs
-		${CARGO} build
-		./run-clippy.sh -c "${CARGO}" -n
+		'${CARGO}' build
+		./run-clippy.sh -c '${CARGO}' -n
 
 install:	all
 		${MKDIR} ${DESTDIR}${BINDIR}
@@ -104,7 +104,7 @@ test-all:	test-c test-perl test-rust
 
 clean:
 		${RM} ${PROG} ${PROG}.o ${MAN1}
-		[ ! -d "target" ] || ${CARGO} clean
+		[ ! -d "target" ] || '${CARGO}' clean
 		[ ! -d .tidyall.d ] || rm -rf .tidyall.d
 
 distclean:	clean
