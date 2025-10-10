@@ -1,7 +1,5 @@
-/*-
- * SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
- * SPDX-License-Identifier: BSD-2-Clause
- */
+// SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
+// SPDX-License-Identifier: BSD-2-Clause
 
 use std::env;
 use std::fs;
