@@ -219,7 +219,7 @@ mod tests {
     }
 
     #[test]
-    fn test_prove() -> Result<()> {
+    fn prove() -> Result<()> {
         println!();
         let path = get_exe_path()?;
 
