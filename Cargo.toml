@@ -25,4 +25,4 @@ clap_derive = "4.0.8"
 shell-words = "1.1"
 
 [dev-dependencies]
-camino = "1.1.9"
+camino = "1.1.6"
