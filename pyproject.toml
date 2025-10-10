@@ -12,7 +12,7 @@ docs = [
   "mkdocs-material >= 9.1.2, < 10",
 ]
 testenv-reuse = [
-  "reuse >= 5, < 6",
+  "reuse >= 6, < 7",
 ]
 testenv-uvoxen = [
   "uvoxen >= 0.2.1, < 0.3",
