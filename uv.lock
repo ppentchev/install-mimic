@@ -135,6 +135,7 @@ source = { virtual = "." }
 
 [package.dev-dependencies]
 docs = [
+    { name = "markupsafe" },
     { name = "mkdocs" },
     { name = "mkdocs-material" },
 ]
@@ -149,8 +150,9 @@ testenv-uvoxen = [
 
 [package.metadata.requires-dev]
 docs = [
-    { name = "mkdocs", specifier = ">=1.4.2,<2" },
-    { name = "mkdocs-material", specifier = ">=9.1.2,<10" },
+    { name = "markupsafe", specifier = ">=2.1" },
+    { name = "mkdocs", specifier = ">=1.5,<2" },
+    { name = "mkdocs-material", specifier = ">=9.3,<10" },
 ]
 testenv-reuse = [{ name = "reuse", specifier = ">=6,<7" }]
 testenv-uvoxen = [{ name = "uvoxen", specifier = ">=0.2.1,<0.3" }]
