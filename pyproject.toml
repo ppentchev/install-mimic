@@ -31,8 +31,8 @@ remote = "marla.ludost.net:vhosts/devel.ringlet.net/public_html/misc/install-mim
 
 [tool.test-stages]
 stages = [
-  "@check and @quick and not @manual",
-  "@check and not @manual",
+  "(@check or @docs) and @quick and not @manual",
+  "(@check or @docs) and not @manual",
 ]
 
 [tool.uvoxen]
