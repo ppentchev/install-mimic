@@ -1,10 +1,10 @@
-install-mimic (0.4.3-1) UNRELEASED; urgency=medium
+install-mimic (0.4.3-1) unstable; urgency=medium
 
   * Convert the watch file to version 5 of the format.
   * Run more tests in Salsa CI.
   * New upstream release.
 
- -- Peter Pentchev <roam@debian.org>  Thu, 23 Oct 2025 12:05:09 +0300
+ -- Peter Pentchev <roam@debian.org>  Thu, 23 Oct 2025 14:26:16 +0300
 
 install-mimic (0.4.2-1) unstable; urgency=medium
 
