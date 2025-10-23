@@ -7,6 +7,15 @@ SPDX-License-Identifier: BSD-2-Clause
 
 These are the released versions of [install-mimic](index.md) available for download.
 
+## [0.4.3] - 2025-10-23
+
+- [install-mimic-0.4.3.tar.bz2](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.3.tar.bz2)
+  (with [a PGP signature](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.3.tar.bz2.asc))
+- [install-mimic-0.4.3.tar.gz](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.3.tar.gz)
+  (with [a PGP signature](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.3.tar.gz.asc))
+- [install-mimic-0.4.3.tar.xz](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.3.tar.xz)
+  (with [a PGP signature](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.3.tar.xz.asc))
+
 ## [0.4.2] - 2025-03-15
 
 - [install-mimic-0.4.2.tar.bz2](https://devel.ringlet.net/files/misc/install-mimic/install-mimic-0.4.2.tar.bz2)
@@ -77,6 +86,7 @@ These are the released versions of [install-mimic](index.md) available for downl
 - [install_mimic-0.1.0.tar.gz](https://devel.ringlet.net/files/misc/install-mimic/install_mimic-0.1.0.tar.gz)
   (with [a PGP signature](https://devel.ringlet.net/files/misc/install-mimic/install_mimic-0.1.0.tar.gz.asc))
 
+[0.4.3]: https://github.com/ppentchev/install-mimic/releases/tag/release%2F0.4.3
 [0.4.2]: https://github.com/ppentchev/install-mimic/releases/tag/release%2F0.4.2
 [0.4.1]: https://github.com/ppentchev/install-mimic/releases/tag/release%2F0.4.1
 [0.4.0]: https://github.com/ppentchev/install-mimic/releases/tag/release%2F0.4.0
