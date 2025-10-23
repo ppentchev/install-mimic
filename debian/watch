@@ -1,3 +1,5 @@
-version=4
-opts=pgpsigurlmangle=s/$/.asc/ \
-https://devel.ringlet.net/misc/install-mimic/download/ https://devel.ringlet.net/(?:files/)?misc/install-mimic/install-mimic-@ANY_VERSION@@ARCHIVE_EXT@
+Version: 5
+
+Source: https://devel.ringlet.net/misc/install-mimic/download/
+Matching-Pattern: https://devel.ringlet.net/(?:files/)?misc/install-mimic/install-mimic-@ANY_VERSION@@ARCHIVE_EXT@
+Pgp-Sig-Url-Mangle: s/$/.asc/
