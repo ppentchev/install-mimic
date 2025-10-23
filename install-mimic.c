@@ -26,7 +26,7 @@
 #endif
 #endif
 
-#define VERSION_STRING	"0.4.2"
+#define VERSION_STRING	"0.4.3"
 
 static bool		verbose;
 

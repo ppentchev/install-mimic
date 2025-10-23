@@ -1,12 +1,6 @@
 # SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
 # SPDX-License-Identifier: BSD-2-Clause
 
-PACKAGE=	install-mimic
-VERSION=	`perl install-mimic.pl -V | awk "{print \\$$2}"`
-
-PKG_DIR?=	..
-PKG_TAR=	${PKG_DIR}/${PACKAGE}-${VERSION}.tar
-
 PROG?=		install-mimic
 MAN1?=		install-mimic.1.gz
 
@@ -73,8 +67,8 @@ ${MAN1}:	${PROG}.1
 		${GZIP} -cn9 ${PROG}.1 > ${MAN1} || (rm -f -- ${MAN1}; false)
 
 ${PROG_RS}:	${PROG}.rs
-		${CARGO} build
-		./run-clippy.sh -c "${CARGO}" -n
+		'${CARGO}' build
+		./run-clippy.sh -c '${CARGO}' -n
 
 install:	all
 		${MKDIR} ${DESTDIR}${BINDIR}
@@ -104,20 +98,10 @@ test-all:	test-c test-perl test-rust
 
 clean:
 		${RM} ${PROG} ${PROG}.o ${MAN1}
-		[ ! -d "target" ] || ${CARGO} clean
+		[ ! -d "target" ] || '${CARGO}' clean
 		[ ! -d .tidyall.d ] || rm -rf .tidyall.d
 
 distclean:	clean
 		${RM} Cargo.lock
-
-dist:
-		[ -n "$$ALLOW_DIST_DEV" ] || devver
-		@printf "\n===== Creating %s.*\n\n" "${PKG_TAR}"
-		git archive --format=tar --prefix="${PACKAGE}-${VERSION}/" -o "${PKG_TAR}" HEAD || (rm -f -- "${PKG_TAR}"; false)
-		gzip -nc9 "${PKG_TAR}" > "${PKG_TAR}.gz" || (rm -f -- "${PKG_TAR}.gz"; false)
-		bzip2 -c9 "${PKG_TAR}" > "${PKG_TAR}.bz2" || (rm -f -- "${PKG_TAR}.bz2"; false)
-		xz -c9 "${PKG_TAR}" > "${PKG_TAR}.xz" || (rm -f -- "${PKG_TAR}.xz"; false)
-		rm -- "${PKG_TAR}"
-		@printf "\n===== Created %s.*\n\n" "${PKG_TAR}"
 
 .PHONY:		all install test-all test-c test-perl test-rust test clean dist

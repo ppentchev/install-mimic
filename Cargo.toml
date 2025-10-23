@@ -3,7 +3,7 @@
 
 [package]
 name = "install-mimic"
-version = "0.4.2"
+version = "0.4.3"
 edition = "2024"
 rust-version = "1.85"
 authors = ["Peter Pentchev <roam@ringlet.net>"]
@@ -19,7 +19,8 @@ name = "install-mimic"
 path = "install-mimic.rs"
 
 [dependencies]
-anyhow = "1"
-clap = "4"
-clap_derive = "4"
+camino = "1.1.6"
+eyre = "0.6.12"
+clap = "4.5.23"
+clap_derive = "4.5.18"
 shell-words = "1.1"

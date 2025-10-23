@@ -12,6 +12,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.3] - 2025-10-23
+
+### Semi-incompatible changes
+
+- Rust implementation:
+    - use `camino` for UTF-8 path handling
+
+### Fixes
+
+- Documentation:
+    - actually run the `docs` environment when run via `tox-stages`
+
+### Additions
+
+- Documentation:
+    - add configuration for the `publync` tool for publishing to the Ringlet website
+- Rust implementation:
+    - add a unit test that runs the TAP test suite
+
+### Other changes
+
+- Build framework:
+    - use single quotes for the `$CARGO` variable expansion
+    - drop the `dist` target
+- Documentation:
+    - use `reuse` 6.x with no changes
+    - bump the lower version requirements for the dependencies to avoid
+      a segfault with Python 3.14
+- Rust implementation:
+    - drop the `Debug` trait from various structs
+    - switch from `anyhow` to `eyre` for error reporting
+    - bump the lower version requirements for the dependencies to the versions
+      available in the Debian stable distribution
+    - use //-style comments for the SPDX tags
+
 ## [0.4.2] - 2025-03-15
 
 ### Fixes
@@ -120,8 +155,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First public release.
 
-[Unreleased]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.2...master
-[0.4.2]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.0...release%2F0.4.2
+[Unreleased]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.3...master
+[0.4.3]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.2...release%2F0.4.3
+[0.4.2]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.1...release%2F0.4.2
 [0.4.1]: https://github.com/ppentchev/install-mimic/compare/release%2F0.4.0...release%2F0.4.1
 [0.4.0]: https://github.com/ppentchev/install-mimic/compare/release%2F0.3.1...release%2F0.4.0
 [0.3.1]: https://github.com/ppentchev/install-mimic/compare/release%2F0.3.0...release%2F0.3.1

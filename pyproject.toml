@@ -3,28 +3,40 @@
 
 [project]
 name = "install-mimic"
-version = "0.4.2"
+version = "0.4.3"
 classifiers = []
 
 [dependency-groups]
 docs = [
-  "mkdocs >= 1.4.2, < 2",
-  "mkdocs-material >= 9.1.2, < 10",
+  "mkdocs >= 1.5, < 2",
+  "mkdocs-material >= 9.3, < 10",
+
+  # Transitive to avoid segfaults with Python 3.14 and `uv --resolution=lowest`
+  "markupsafe >= 2.1",
 ]
 testenv-reuse = [
-  "reuse >= 5, < 6",
+  "reuse >= 6, < 7",
 ]
 testenv-uvoxen = [
-  "uvoxen >= 0.1.1, < 0.2",
+  "uvoxen >= 0.2.1, < 0.3",
 ]
+
+[tool.publync]
+mediaType = "vnd.ringlet.misc.publync.config/publync.v0.1+toml"
+
+[tool.publync.build.tox]
+
+[tool.publync.sync.rsync]
+remote = "marla.ludost.net:vhosts/devel.ringlet.net/public_html/misc/install-mimic"
 
 [tool.test-stages]
 stages = [
-  "@check and @quick and not @manual",
-  "@check and not @manual",
+  "(@check or @docs) and @quick and not @manual",
+  "(@check or @docs) and not @manual",
 ]
 
 [tool.uvoxen]
+mediaType = "vnd.ringlet.devel.uvoxen.config/uvoxen.v0.3+toml"
 build-project = false
 
 envlist = [
@@ -32,10 +44,6 @@ envlist = [
   "uvoxen-sync-check",
   "docs",
 ]
-
-[tool.uvoxen.format.version]
-major = 0
-minor = 2
 
 [tool.uvoxen.req]
 header = """
