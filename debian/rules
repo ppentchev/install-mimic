@@ -1,23 +1,21 @@
 #!/usr/bin/make -f
 
-# Aim for the top, adapt if anything should break on the buildds.
-DEB_BUILD_MAINT_OPTIONS=	hardening=+all future=+lfs
-export DEB_BUILD_MAINT_OPTIONS
-
-ifneq (,$(filter werror,$(DEB_BUILD_OPTIONS)))
-DEB_CFLAGS_MAINT_APPEND=	-Werror
-export DEB_CFLAGS_MAINT_APPEND
-endif
-
 include /usr/share/dpkg/default.mk
 
 include /usr/share/debhelper/dh_package_notes/package-notes.mk
 
-export LFS_CPPFLAGS=
-export LFS_LDFLAGS=
+override_dh_auto_clean:
+	rm -rf target/
 
-export INSTALL_DATA=	install -m 644
-export INSTALL_SCRIPT=	install -m 755
+override_dh_auto_build:
+	[ -d .cargo ] || install -d -m 755 .cargo
+	install -m 644 -- debian/cargo-config.toml .cargo/config.toml
+	cargo build --release
+
+override_dh_auto_test:
+	env INSTALL_MIMIC=./target/release/install-mimic prove -v t
+
+override_dh_auto_install:
 
 override_dh_installchangelogs:
 	dh_installchangelogs -X changes.md

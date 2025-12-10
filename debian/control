@@ -7,7 +7,14 @@ Build-Depends:
  dh-package-notes,
  dh-sequence-single-binary,
  dpkg-build-api (= 1),
- perl,
+ cargo,
+ librust-camino-dev,
+ librust-clap-derive-dev,
+ librust-clap-dev,
+ librust-eyre-dev,
+ librust-shell-words-dev,
+ perl <!nocheck>,
+ rustc,
 Standards-Version: 4.7.2
 X-DH-Compat: 14
 Homepage: https://devel.ringlet.net/misc/install-mimic/

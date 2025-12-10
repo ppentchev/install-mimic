@@ -1,4 +1,4 @@
-Test-Command: env INSTALL_MIMIC='/usr/bin/install-mimic' prove -v t
+Test-Command: set -e; rm -rf target; mkdir -p target/release; install -m 755 -- /usr/bin/install-mimic target/release; env INSTALL_MIMIC='./target/release/install-mimic' prove -v t
 Depends:
  perl,
  @,
