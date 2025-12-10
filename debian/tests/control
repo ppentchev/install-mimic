@@ -13,3 +13,12 @@ Features:
  test-name=feature-check,
 Restrictions:
  superficial,
+
+Test-Command: debputy reformat --no-auto-fix --linter-exit-code
+Depends:
+ dh-debputy,
+ python3-lsprotocol,
+Features:
+ test-name=debian-debputy,
+Restrictions:
+ superficial,
