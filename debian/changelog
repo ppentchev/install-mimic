@@ -1,6 +1,10 @@
 install-mimic (0.4.3-2) UNRELEASED; urgency=medium
 
   * Add a superficial `debputy reformat` autopkgtest.
+  * Build and install the Rust implementation of install-mimic and
+    disable the blhc Salsa CI test.
+  * Disable the build-twice and validate-clean-up Salsa CI tests
+    because of a false positive.
 
  -- Peter Pentchev <roam@debian.org>  Thu, 11 Dec 2025 01:05:54 +0200
 
