@@ -12,6 +12,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Semi-incompatible changes
+
+- Rust implementation:
+    - bump MSRV to 1.88, mainly for compatibility with the `roundlet` crate
+
+### Fixes
+
+- Add the `.jj` directory to the `.gitignore` file to make sure we don't
+  accidentally package it up anywhere.
+- Use leading slashes in the `.gitignore` file when referring to files and
+  directories at top level.
+
+### Additions
+
+- Rust implementation:
+    - add some `execline` tools for local building and testing
+    - make sure tests do not fail in the packaged crate
+    - add the Ringlet homepage as a Cargo package field
+
+### Other changes
+
+- Rust implementation:
+    - do not use inline trait bounds
+    - add some more Clippy overrides: inline modules, use of `std`
+    - switch from `eyre` to `anyhow`
+    - use the `roundlet` crate's `cli-basic-clap` feature to parse command line arguments
+    - use the `roundlet` crate's `test-exe-path` feature in the test suite
+    - trim down the list of files packaged into the crate
+- Documentation:
+    - use `uvoxen` for the `publync` build
+
 ## [0.4.3] - 2025-10-23
 
 ### Semi-incompatible changes
