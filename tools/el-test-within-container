@@ -1,0 +1,51 @@
+#!/usr/bin/env execlineb
+# SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
+# SPDX-License-Identifier: BSD-2-Clause
+
+backtick -E tempd {
+  mktemp -d -t install-mimic-test.XXXXXX
+}
+trap {
+  default {
+    foreground {
+      echo "Cleaning up ${tempd} in a ${SIGNAL} signal handler"
+    }
+    rm -rf -- $tempd
+  }
+}
+
+foreground {
+  if {
+    pipeline {
+      tar cf - --exclude .jj --exclude target .
+    }
+    cd $tempd
+    tar xf -
+  }
+  
+  cd ${tempd}
+  
+  if {
+    tools/el-build-and-test
+  }
+  if {
+    if {
+      cargo build --release
+    }
+    cargo test --release
+  }
+  if {
+    make test
+  }
+  
+  echo "Seems fine"
+}
+
+importas exitcode ?
+foreground {
+  echo "Cleaning up ${tempd}"
+}
+foreground {
+  rm -rf -- $tempd
+}
+exit $exitcode

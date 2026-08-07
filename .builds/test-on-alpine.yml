@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
+# SPDX-License-Identifier: BSD-2-Clause
+
+image: alpine/latest
+repositories:
+    ringlet-edge: >
+        https://devel.ringlet.net/repo/alpine/ringlet/edge
+        https://devel.ringlet.net/repo/alpine/ringlet/edge/keys/roam@ringlet.net-6a32fb63.rsa.pub
+        roam@ringlet.net-6a32fb63.rsa.pub
+packages:
+    - cargo
+    - cargo-feature-combinations
+    - cargo-nextest
+    - execline
+    - gcc
+    - jq
+    - make
+    - musl-dev
+    - perl-utils
+    - rust-clippy
+    - rustfmt
+sources:
+    - https://git.sr.ht/~ppentchev/install-mimic
+tasks:
+    - test-within-container: |
+        cd install-mimic
+        tools/el-test-within-container
