@@ -7,10 +7,10 @@ use std::io::ErrorKind;
 use std::os::unix::fs::MetadataExt as _;
 use std::process::Command;
 
+use anyhow::{Context as _, Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use clap::Parser as _;
 use clap_derive::Parser;
-use eyre::{Result, WrapErr as _, bail, eyre};
 
 #[derive(Parser)]
 #[clap(version)]
@@ -104,7 +104,7 @@ fn parse_args() -> Result<Mode> {
     let mut filenames = opts.filenames;
     let destination = filenames
         .pop()
-        .ok_or_else(|| eyre!("No source or destination paths specified"))?;
+        .ok_or_else(|| anyhow!("No source or destination paths specified"))?;
     if filenames.is_empty() {
         bail!("At least one source and one destination path must be specified");
     }
@@ -136,7 +136,7 @@ fn doit(cfg: &Config) -> Result<()> {
         for path in &cfg.filenames {
             let basename = path
                 .file_name()
-                .ok_or_else(|| eyre!("Invalid source filename {path}"))?;
+                .ok_or_else(|| anyhow!("Invalid source filename {path}"))?;
             install_mimic(
                 path,
                 cfg.destination.join(basename),
@@ -173,15 +173,15 @@ mod tests {
     use std::process::{Command, Stdio};
     use std::sync::LazyLock;
 
+    use anyhow::{Context as _, Result, anyhow, bail};
     use camino::{Utf8Path, Utf8PathBuf};
-    use eyre::{Result, WrapErr as _, bail, eyre};
 
     static PATH: LazyLock<Result<Utf8PathBuf>> = LazyLock::new(|| {
         let current = Utf8PathBuf::from_path_buf(
             env::current_exe().context("Could not get the current executable file's path")?,
         )
         .map_err(|path| {
-            eyre!(
+            anyhow!(
                 "Could not represent the current executable file's path {path} as UTF-8",
                 path = path.display()
             )
@@ -189,15 +189,15 @@ mod tests {
         let exe_dir = {
             let basedir = current
                 .parent()
-                .ok_or_else(|| eyre!("Could not get the parent directory of {current}"))?;
+                .ok_or_else(|| anyhow!("Could not get the parent directory of {current}"))?;
             if basedir
                 .file_name()
-                .ok_or_else(|| eyre!("Could not get the base name of {basedir}"))?
+                .ok_or_else(|| anyhow!("Could not get the base name of {basedir}"))?
                 == "deps"
             {
                 basedir
                     .parent()
-                    .ok_or_else(|| eyre!("Could not get the parent directory of {basedir}"))?
+                    .ok_or_else(|| anyhow!("Could not get the parent directory of {basedir}"))?
             } else {
                 basedir
             }
