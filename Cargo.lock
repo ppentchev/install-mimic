@@ -127,7 +127,7 @@ checksum = "964de6e86d545b246d84badc0fef527924ace5134f30641c203ef52ba83f58d5"
 
 [[package]]
 name = "install-mimic"
-version = "0.4.3"
+version = "0.4.4"
 dependencies = [
  "camino",
  "clap",
