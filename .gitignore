@@ -1,10 +1,11 @@
 # SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
 # SPDX-License-Identifier: BSD-2-Clause
 
-.tidyall.d/
-.tox/
-site/
-target/
+/.jj/
+/.tidyall.d/
+/.tox/
+/site/
+/target/
 
-install-mimic
-install-mimic.o
+/install-mimic
+/install-mimic.o

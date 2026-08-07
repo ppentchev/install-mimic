@@ -217,11 +217,7 @@ is_deeply $c->{lines}, \@usage_lines, "$prog --help output the same as $prog -h"
 
 $c = capture(0, $prog, '-h', '-V');
 is $c->{exitcode}, 0, "$prog -h -V succeeded";
-if ($prog =~ m{/target/}) {
-	is scalar @{$c->{lines}}, scalar @usage_lines, "$prog -h output as many lines as $prog -h";
-} else {
-	is scalar @{$c->{lines}}, scalar @usage_lines + 1, "$prog -h -V output one line more than $prog -h";
-}
+is scalar @{$c->{lines}}, scalar @usage_lines + 1, "$prog -h -V output one line more than $prog -h";
 
 $c = capture(0, $prog, '--features');
 is $c->{exitcode}, 0, "$prog --features succeeded";

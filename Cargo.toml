@@ -3,24 +3,37 @@
 
 [package]
 name = "install-mimic"
-version = "0.4.3"
+version = "0.4.4"
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.88"
 authors = ["Peter Pentchev <roam@ringlet.net>"]
 description = "Overwrite files preserving the destination's ownership and access mode"
 readme = "README.md"
 license = "BSD-2-Clause"
 repository = "https://gitlab.com/ppentchev/install-mimic"
+homepage = "https://devel.ringlet.net/misc/install-mimic"
 categories = ["command-line-utilities", "filesystem"]
 keywords = ["install", "file", "preserve"]
+include = [
+  "/Cargo.lock",
+  "/Cargo.toml",
+  "/.gitignore",
+  "/install-mimic.1",
+  "/install-mimic.rs",
+  "/t",
+]
 
 [[bin]]
 name = "install-mimic"
 path = "install-mimic.rs"
 
 [dependencies]
+anyhow = "1.0.65"
 camino = "1.1.6"
-eyre = "0.6.12"
 clap = "4.5.23"
 clap_derive = "4.5.18"
+roundlet = { version = "0.2.0", features = ["cli-basic-clap"] }
 shell-words = "1.1"
+
+[dev-dependencies]
+roundlet = { version = "0.2.0", features = ["test-exe-path"] }

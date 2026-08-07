@@ -7,18 +7,15 @@ use std::io::ErrorKind;
 use std::os::unix::fs::MetadataExt as _;
 use std::process::Command;
 
+use anyhow::{Context as _, Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use clap::Parser as _;
 use clap_derive::Parser;
-use eyre::{Result, WrapErr as _, bail, eyre};
+use roundlet::cli_basic;
 
 #[derive(Parser)]
 #[clap(version)]
 struct Cli {
-    /// Display the features supported by the program.
-    #[clap(long)]
-    features: bool,
-
     /// Specify a reference file to obtain the information from.
     #[clap(short)]
     reffile: Option<Utf8PathBuf>,
@@ -44,17 +41,12 @@ enum Mode {
     Install(Config),
 }
 
-#[expect(clippy::print_stdout, reason = "This is the purpose of this function")]
-fn features() {
-    println!("Features: install-mimic={VERSION_STR}");
-}
-
-fn install_mimic<SP: AsRef<Utf8Path>, DP: AsRef<Utf8Path>, RP: AsRef<Utf8Path>>(
-    src: SP,
-    dst: DP,
-    refname: Option<&RP>,
-    verbose: bool,
-) -> Result<()> {
+fn install_mimic<SP, DP, RP>(src: SP, dst: DP, refname: Option<&RP>, verbose: bool) -> Result<()>
+where
+    SP: AsRef<Utf8Path>,
+    DP: AsRef<Utf8Path>,
+    RP: AsRef<Utf8Path>,
+{
     let filetoref = refname.as_ref().map_or_else(
         || dst.as_ref().to_path_buf(),
         |refpath| refpath.as_ref().to_path_buf(),
@@ -95,16 +87,28 @@ fn install_mimic<SP: AsRef<Utf8Path>, DP: AsRef<Utf8Path>, RP: AsRef<Utf8Path>>(
 }
 
 fn parse_args() -> Result<Mode> {
-    let opts = Cli::parse();
-    if opts.features {
-        features();
+    if cli_basic::handle_basic_options(
+        "install-mimic",
+        VERSION_STR,
+        [("install-mimic", VERSION_STR)],
+        "Usage:	install-mimic [-v] [-r reffile] srcfile dstfile
+	install-mimic [-v] [-r reffile] file1 [file2...] directory
+	install-mimic -V | --version | -h | --help
+	install-mimic --features
+
+	-h	display program usage information and exit
+	-r	specify a reference file to obtain the information from
+	-V	display program version information and exit
+	-v	verbose operation; display diagnostic output",
+    ) {
         return Ok(Mode::Handled);
     }
+    let opts = Cli::parse();
 
     let mut filenames = opts.filenames;
     let destination = filenames
         .pop()
-        .ok_or_else(|| eyre!("No source or destination paths specified"))?;
+        .ok_or_else(|| anyhow!("No source or destination paths specified"))?;
     if filenames.is_empty() {
         bail!("At least one source and one destination path must be specified");
     }
@@ -136,7 +140,7 @@ fn doit(cfg: &Config) -> Result<()> {
         for path in &cfg.filenames {
             let basename = path
                 .file_name()
-                .ok_or_else(|| eyre!("Invalid source filename {path}"))?;
+                .ok_or_else(|| anyhow!("Invalid source filename {path}"))?;
             install_mimic(
                 path,
                 cfg.destination.join(basename),
@@ -168,52 +172,20 @@ fn main() -> Result<()> {
 #[expect(clippy::print_stdout, reason = "this is a test suite")]
 #[expect(clippy::use_debug, reason = "this is a test suite")]
 mod tests {
-    use std::env;
     use std::io::ErrorKind as IoErrorKind;
     use std::process::{Command, Stdio};
     use std::sync::LazyLock;
 
-    use camino::{Utf8Path, Utf8PathBuf};
-    use eyre::{Result, WrapErr as _, bail, eyre};
-
-    static PATH: LazyLock<Result<Utf8PathBuf>> = LazyLock::new(|| {
-        let current = Utf8PathBuf::from_path_buf(
-            env::current_exe().context("Could not get the current executable file's path")?,
-        )
-        .map_err(|path| {
-            eyre!(
-                "Could not represent the current executable file's path {path} as UTF-8",
-                path = path.display()
-            )
-        })?;
-        let exe_dir = {
-            let basedir = current
-                .parent()
-                .ok_or_else(|| eyre!("Could not get the parent directory of {current}"))?;
-            if basedir
-                .file_name()
-                .ok_or_else(|| eyre!("Could not get the base name of {basedir}"))?
-                == "deps"
-            {
-                basedir
-                    .parent()
-                    .ok_or_else(|| eyre!("Could not get the parent directory of {basedir}"))?
-            } else {
-                basedir
-            }
-        };
-        let res = exe_dir.join("install-mimic");
-        if !res.is_file() {
-            bail!("Expected a file at {res}");
-        }
-        Ok(res)
-    });
+    use anyhow::{Context as _, Result, bail};
+    use camino::Utf8Path;
+    use roundlet::test_exe::{self, PathsMapResult};
 
     fn get_exe_path() -> Result<&'static Utf8Path> {
-        match PATH.as_deref() {
-            Ok(res) => Ok(res),
-            Err(err) => bail!("{err}"),
-        }
+        static EXE_NAMES: [&str; 1] = ["install-mimic"];
+        static PATHS_RES: LazyLock<PathsMapResult<'_>> =
+            LazyLock::new(|| test_exe::find_exe_paths(&EXE_NAMES));
+
+        (*PATHS_RES).get_exe_path("install-mimic")
     }
 
     #[test]

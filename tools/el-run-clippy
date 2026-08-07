@@ -1,0 +1,32 @@
+#!/usr/bin/env execlineb
+# SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
+# SPDX-License-Identifier: BSD-2-Clause
+
+elgetopt -D "-Wclippy::nursery" c:n
+importas -D "cargo" default_cargo CARGO
+importas -D $default_cargo CARGO ELGETOPT_c
+importas -S ELGETOPT_n
+$CARGO clippy
+	--tests
+	--
+	-W warnings
+	-W future-incompatible
+	-W nonstandard-style
+	-W rust-2018-compatibility
+	-W rust-2018-idioms
+	-W rust-2021-compatibility
+	-W rust-2024-compatibility
+	-W unused
+	-W clippy::restriction
+		-A clippy::arbitrary_source_item_ordering
+		-A clippy::blanket_clippy_restriction_lints
+		-A clippy::implicit_return
+		-A clippy::inline_modules
+		-A clippy::question_mark_used
+		-A clippy::ref_patterns
+		-A clippy::self_named_module_files
+		-A clippy::single_call_fn
+		-A clippy::std_instead_of_core
+	-W clippy::pedantic
+	-W clippy::cargo
+	$ELGETOPT_n
