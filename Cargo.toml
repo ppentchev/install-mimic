@@ -11,6 +11,7 @@ description = "Overwrite files preserving the destination's ownership and access
 readme = "README.md"
 license = "BSD-2-Clause"
 repository = "https://gitlab.com/ppentchev/install-mimic"
+homepage = "https://devel.ringlet.net/misc/install-mimic"
 categories = ["command-line-utilities", "filesystem"]
 keywords = ["install", "file", "preserve"]
 include = [
