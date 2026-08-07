@@ -1,0 +1,29 @@
+#!/usr/bin/env execlineb
+# SPDX-FileCopyrightText: Peter Pentchev <roam@ringlet.net>
+# SPDX-License-Identifier: BSD-2-Clause
+
+elgetopt "c:"
+importas -D "cargo" default_cargo CARGO
+importas -D $default_cargo CARGO ELGETOPT_c
+backtick -E version {
+  pipeline {
+    $CARGO metadata --format-version 1
+  }
+  jq -r ".packages[] | select(.name == \"install-mimic\") | .version"
+}
+if {
+  $CARGO fmt --check
+}
+if {
+  $CARGO fc build
+}
+if {
+  $CARGO doc --no-deps --all-features
+}
+if {
+  $CARGO fc nextest run
+}
+if {
+  tools/el-run-clippy -c $CARGO -n
+}
+echo "Seems fine for ${version}"
