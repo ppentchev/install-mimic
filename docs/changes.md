@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - add some `execline` tools for local building and testing
     - make sure tests do not fail in the packaged crate
     - add the Ringlet homepage as a Cargo package field
+- CI:
+    - add sourcehut CI definitions for building and testing on Alpine Linux
 
 ### Other changes
 
