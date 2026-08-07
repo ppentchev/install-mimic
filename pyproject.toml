@@ -24,7 +24,7 @@ testenv-uvoxen = [
 [tool.publync]
 mediaType = "vnd.ringlet.misc.publync.config/publync.v0.1+toml"
 
-[tool.publync.build.tox]
+[tool.publync.build.uvoxen]
 
 [tool.publync.sync.rsync]
 remote = "marla.ludost.net:vhosts/devel.ringlet.net/public_html/misc/install-mimic"
