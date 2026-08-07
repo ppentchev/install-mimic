@@ -11,14 +11,11 @@ use anyhow::{Context as _, Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use clap::Parser as _;
 use clap_derive::Parser;
+use roundlet::cli_basic;
 
 #[derive(Parser)]
 #[clap(version)]
 struct Cli {
-    /// Display the features supported by the program.
-    #[clap(long)]
-    features: bool,
-
     /// Specify a reference file to obtain the information from.
     #[clap(short)]
     reffile: Option<Utf8PathBuf>,
@@ -42,11 +39,6 @@ struct Config {
 enum Mode {
     Handled,
     Install(Config),
-}
-
-#[expect(clippy::print_stdout, reason = "This is the purpose of this function")]
-fn features() {
-    println!("Features: install-mimic={VERSION_STR}");
 }
 
 fn install_mimic<SP, DP, RP>(src: SP, dst: DP, refname: Option<&RP>, verbose: bool) -> Result<()>
@@ -95,11 +87,23 @@ where
 }
 
 fn parse_args() -> Result<Mode> {
-    let opts = Cli::parse();
-    if opts.features {
-        features();
+    if cli_basic::handle_basic_options(
+        "install-mimic",
+        VERSION_STR,
+        [("install-mimic", VERSION_STR)],
+        "Usage:	install-mimic [-v] [-r reffile] srcfile dstfile
+	install-mimic [-v] [-r reffile] file1 [file2...] directory
+	install-mimic -V | --version | -h | --help
+	install-mimic --features
+
+	-h	display program usage information and exit
+	-r	specify a reference file to obtain the information from
+	-V	display program version information and exit
+	-v	verbose operation; display diagnostic output",
+    ) {
         return Ok(Mode::Handled);
     }
+    let opts = Cli::parse();
 
     let mut filenames = opts.filenames;
     let destination = filenames
