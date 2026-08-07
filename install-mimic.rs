@@ -168,52 +168,20 @@ fn main() -> Result<()> {
 #[expect(clippy::print_stdout, reason = "this is a test suite")]
 #[expect(clippy::use_debug, reason = "this is a test suite")]
 mod tests {
-    use std::env;
     use std::io::ErrorKind as IoErrorKind;
     use std::process::{Command, Stdio};
     use std::sync::LazyLock;
 
-    use anyhow::{Context as _, Result, anyhow, bail};
-    use camino::{Utf8Path, Utf8PathBuf};
-
-    static PATH: LazyLock<Result<Utf8PathBuf>> = LazyLock::new(|| {
-        let current = Utf8PathBuf::from_path_buf(
-            env::current_exe().context("Could not get the current executable file's path")?,
-        )
-        .map_err(|path| {
-            anyhow!(
-                "Could not represent the current executable file's path {path} as UTF-8",
-                path = path.display()
-            )
-        })?;
-        let exe_dir = {
-            let basedir = current
-                .parent()
-                .ok_or_else(|| anyhow!("Could not get the parent directory of {current}"))?;
-            if basedir
-                .file_name()
-                .ok_or_else(|| anyhow!("Could not get the base name of {basedir}"))?
-                == "deps"
-            {
-                basedir
-                    .parent()
-                    .ok_or_else(|| anyhow!("Could not get the parent directory of {basedir}"))?
-            } else {
-                basedir
-            }
-        };
-        let res = exe_dir.join("install-mimic");
-        if !res.is_file() {
-            bail!("Expected a file at {res}");
-        }
-        Ok(res)
-    });
+    use anyhow::{Context as _, Result, bail};
+    use camino::Utf8Path;
+    use roundlet::test_exe::{self, PathsMapResult};
 
     fn get_exe_path() -> Result<&'static Utf8Path> {
-        match PATH.as_deref() {
-            Ok(res) => Ok(res),
-            Err(err) => bail!("{err}"),
-        }
+        static EXE_NAMES: [&str; 1] = ["install-mimic"];
+        static PATHS_RES: LazyLock<PathsMapResult<'_>> =
+            LazyLock::new(|| test_exe::find_exe_paths(&EXE_NAMES));
+
+        (*PATHS_RES).get_exe_path("install-mimic")
     }
 
     #[test]

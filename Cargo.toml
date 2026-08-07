@@ -24,3 +24,6 @@ camino = "1.1.6"
 clap = "4.5.23"
 clap_derive = "4.5.18"
 shell-words = "1.1"
+
+[dev-dependencies]
+roundlet = { version = "0.2.0", features = ["test-exe-path"] }
