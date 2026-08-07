@@ -24,6 +24,19 @@ if {
   $CARGO fc nextest run
 }
 if {
+  if {
+    rm -rf target/package
+  }
+  if {
+    $CARGO publish --dry-run
+  }
+  cd "target/package/install-mimic-${version}"
+  if {
+    $CARGO build
+  }
+  $CARGO test
+}
+if {
   tools/el-run-clippy -c $CARGO -n
 }
 echo "Seems fine for ${version}"
