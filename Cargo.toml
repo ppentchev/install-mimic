@@ -13,6 +13,14 @@ license = "BSD-2-Clause"
 repository = "https://gitlab.com/ppentchev/install-mimic"
 categories = ["command-line-utilities", "filesystem"]
 keywords = ["install", "file", "preserve"]
+include = [
+  "/Cargo.lock",
+  "/Cargo.toml",
+  "/.gitignore",
+  "/install-mimic.1",
+  "/install-mimic.rs",
+  "/t",
+]
 
 [[bin]]
 name = "install-mimic"
