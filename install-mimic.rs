@@ -49,12 +49,12 @@ fn features() {
     println!("Features: install-mimic={VERSION_STR}");
 }
 
-fn install_mimic<SP: AsRef<Utf8Path>, DP: AsRef<Utf8Path>, RP: AsRef<Utf8Path>>(
-    src: SP,
-    dst: DP,
-    refname: Option<&RP>,
-    verbose: bool,
-) -> Result<()> {
+fn install_mimic<SP, DP, RP>(src: SP, dst: DP, refname: Option<&RP>, verbose: bool) -> Result<()>
+where
+    SP: AsRef<Utf8Path>,
+    DP: AsRef<Utf8Path>,
+    RP: AsRef<Utf8Path>,
+{
     let filetoref = refname.as_ref().map_or_else(
         || dst.as_ref().to_path_buf(),
         |refpath| refpath.as_ref().to_path_buf(),
