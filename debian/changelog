@@ -1,4 +1,4 @@
-install-mimic (0.4.4-1) UNRELEASED; urgency=medium
+install-mimic (0.4.4-1) unstable; urgency=medium
 
   * New upstream release:
     - update the Rust build dependencies: eyre -> anyhow, add roundlet
@@ -10,7 +10,7 @@ install-mimic (0.4.4-1) UNRELEASED; urgency=medium
     - sort the variable definitions alphabetically
     - also test the nocheck build profile
 
- -- Peter Pentchev <roam@debian.org>  Sat, 08 Aug 2026 02:38:54 +0300
+ -- Peter Pentchev <roam@debian.org>  Sat, 08 Aug 2026 03:22:27 +0300
 
 install-mimic (0.4.3-2) unstable; urgency=medium
 
