@@ -8,6 +8,7 @@ variables:
   SALSA_CI_DISABLE_BUILD_PACKAGE_ALL: 1
   SALSA_CI_DISABLE_BUILD_PACKAGE_ANY: 1
   SALSA_CI_DISABLE_EXPORTORIG_FALLBACK: 1
+  SALSA_CI_ENABLE_BUILD_PACKAGE_PROFILES: 1
   SALSA_CI_REPROTEST_ENABLE_DIFFOSCOPE: 1
 
 debputy-reformat:
@@ -20,3 +21,9 @@ debputy-reformat:
   except:
     variables:
       - $CI_COMMIT_TAG != null && $SALSA_CI_ENABLE_PIPELINE_ON_TAGS !~ /^(1|yes|true)$/
+
+test-build-profiles:
+  extends: .test-build-package-profiles
+  parallel:
+    matrix:
+      - BUILD_PROFILES: nocheck
